@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'pg'
+Dir["/messaging_service/gplus-quickstart-ruby/*.rb"].each {|file| require file }
 load './local_env.rb' if File.exists?('./local_env.rb')
 db_params = {
     host: ENV['host'],
