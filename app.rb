@@ -11,3 +11,18 @@ db_params = {
 
 db = PG::Connection.new(db_params)
 
+get '/' do
+	erb :home
+end
+
+post '/login' do
+	erb :login
+end
+
+post '/create_account' do
+	erb :create_account
+end
+
+post '/message' do
+	erb :message
+end
