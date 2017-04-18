@@ -20,6 +20,10 @@ post '/login' do
 end
 
 post '/create_account' do
+	full_name = params[:full_name]
+	username = params[:username]
+	password = params[:password]
+	db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')"); 
 	erb :create_account
 end
 
