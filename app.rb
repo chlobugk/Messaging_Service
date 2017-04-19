@@ -32,6 +32,3 @@ post '/message' do
 	erb :message
 end
 
-post '/google' do
-	 redirect'signin.rb'
-end
