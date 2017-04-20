@@ -21,24 +21,18 @@ post '/login' do
 end
 
 post '/create_account' do
-		session[:message] = nil
-		erb :create_account, locals: {message: session[:message]}
+	erb :create_account
 end
 
 
 post '/created' do
-	accounts=db.exec("SELECT full_name, username, password FROM accounts");
-		if accounts.include?(params[:username])
-			session[:message] = 'Invalid'
-			redirect '/create_account'
-		else
+		accounts=db.exec("SELECT full_name, username, password FROM accounts");
 		#this post adds created account info to database
 		full_name = params[:full_name]
 		username = params[:username]
 		password = params[:password] 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')")
-		erb :login
-		end
+		erb :message, locals: {username: username}
 end
 
 post '/message' do
