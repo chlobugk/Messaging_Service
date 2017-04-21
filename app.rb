@@ -13,6 +13,7 @@ db_params = {
 db = PG::Connection.new(db_params)
 
 get '/' do
+	
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
@@ -33,14 +34,24 @@ get '/invalid_credentials' do
 	erb :create_account, locals: {message1: message1, message2: message2}
 end
 
+get '/username_not_unique' do
+	message1 = 'The user name you selected has already been taken.'
+	message2 = 'Please choose a different user name.'
+	erb :create_account, locals: {message1: message1, message2: message2}
+end
+
 post '/created' do
-	if valid_credentials?(params[:full_name], params[:username], params[:password]) == false	
+	full_name = params[:full_name]
+	username = params[:username]
+	password = params[:password]
+
+	if valid_credentials?(full_name, username, password) == false	
 		redirect '/invalid_credentials'
+	elsif username_not_unique?(username)
+		redirect '/username_not_unique'
 	else
 		#this post adds created account info to database
-		full_name = params[:full_name]
-		username = params[:username]
-		password = params[:password] 
+		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')")
 		erb :message, locals: {username: username}
 	end
