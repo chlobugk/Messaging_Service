@@ -18,18 +18,10 @@ get '/' do
 end
 
 post '/login' do
-	redirect '/login'
-end
-
-get '/login' do
 	erb :login
 end
 
 post '/create_account' do
-	redirect '/create_account'
-end
-
-get '/create_account' do
 	message1 = nil
 	message2 = nil
 	erb :create_account, locals: {message1: message1, message2: message2}
@@ -46,7 +38,6 @@ post '/created' do
 		redirect '/invalid_credentials'
 	else
 		#this post adds created account info to database
-		accounts=db.exec("SELECT full_name, username, password FROM accounts");
 		full_name = params[:full_name]
 		username = params[:username]
 		password = params[:password] 
