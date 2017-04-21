@@ -13,20 +13,29 @@ db_params = {
 db = PG::Connection.new(db_params)
 
 get '/' do
-	
+
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
 
 post '/login' do
+	redirect '/login'
+end
+
+get '/login' do
 	erb :login
 end
 
 post '/create_account' do
+	redirect '/create_account'
+end
+
+get '/create_account' do
 	message1 = nil
 	message2 = nil
 	erb :create_account, locals: {message1: message1, message2: message2}
 end
+
 
 get '/invalid_credentials' do
 	message1 = 'One or more of your credentials was invalid.'

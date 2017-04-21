@@ -80,3 +80,9 @@ hr {
   float: left;
   margin-top: 16px;
 }
+
+.font {
+  font-family: Helvetica;
+  font-size: 30px;
+  color: #03255b;
+}
