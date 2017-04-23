@@ -9,11 +9,12 @@ db_params = {
     user: ENV['user'],
     password: ENV['password']
 }
+enable :sessions
 
 db = PG::Connection.new(db_params)
 
 get '/' do
-
+	session[:username] = nil
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
@@ -23,7 +24,21 @@ post '/login' do
 end
 
 get '/login' do
-	erb :login
+	erb :login, locals: {message: ''}
+end
+
+get '/invalid_login' do
+	message = 'The username or password you entered is incorrect.'
+	erb :login, locals: {message: message}
+end
+
+post '/check_login' do
+	session[:username] = params[:username]
+	if login_match?(session[:username], params[:password])
+		redirect '/message_home'
+	else
+		redirect '/invalid_login'
+	end
 end
 
 post '/create_account' do
@@ -65,8 +80,7 @@ post '/created' do
 		redirect '/username_not_unique'
 	else
 		#this post adds created account info to database
-		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')")
+		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
 		erb :message, locals: {username: username}
 	end
 end
@@ -77,9 +91,8 @@ post '/message' do
 end
 
 get '/message_home' do
-	username = params[:username]
 
-	erb :message, locals: {username: username}
+	erb :message, locals: {username: session[:username]}
 
 end
 

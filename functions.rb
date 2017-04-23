@@ -37,3 +37,30 @@ def username_not_unique?(new_username)
 	end
 	results
 end
+
+def login_match?(log_username, log_password)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	dbname=db.exec("SELECT username, password FROM accounts")
+	results = false
+	dbname.each do |item|
+		if item['username'] == log_username && item['password'] == log_password
+			results = true
+		end
+	end
+	results
+end
+
+
+
+
+
+
