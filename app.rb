@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'pg'
+require 'scrypt'
 require_relative 'functions.rb'
 load './local_env.rb' if File.exists?('./local_env.rb')
 db_params = {
@@ -64,9 +65,10 @@ post '/created' do
 	elsif username_not_unique?(username)
 		redirect '/username_not_unique'
 	else
+		hashed_password = SCrypt::Password.create("#{password}")
 		#this post adds created account info to database
 		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')")
+		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		erb :message, locals: {username: username}
 	end
 end
