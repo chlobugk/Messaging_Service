@@ -1,1 +1,8 @@
-Welcome <%=username%> 
+Welcome <%=username%>
+<br>
+
+<form action="/addfriend" method="post">
+	<input type="hidden" name="username" value=<%=username%>>
+	<input type="text" name="friend_name" placeholder="Add Friend">
+	<input type='submit'>
+</form>

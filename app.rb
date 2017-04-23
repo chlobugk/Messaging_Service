@@ -71,3 +71,24 @@ post '/message' do
 	erb :message, locals: {username: username}
 end
 
+get '/message_home' do
+	username = params[:username]
+
+	erb :message, locals: {username: username}
+
+end
+
+post '/addfriend' do
+
+	friend_name = params[:friend_name].to_s
+	username = params[:username].to_s
+	table_name = "msg" + "_" + username + "_" + friend_name
+
+	db.exec("CREATE TABLE #{table_name} (
+	messageID	integer CONSTRAINT firstkey PRIMARY KEY,
+    message     text
+	)")
+	redirect '/message_home?username=' + username
+
+end
+
