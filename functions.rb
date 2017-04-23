@@ -37,6 +37,3 @@ def username_not_unique?(new_username)
 	end
 	results
 end
-
-
-

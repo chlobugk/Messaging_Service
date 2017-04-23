@@ -53,9 +53,14 @@ post '/created' do
 	full_name = params[:full_name]
 	username = params[:username]
 	password = params[:password]
+	password2 = params[:password2]
 
 	if valid_credentials?(full_name, username, password) == false	
 		redirect '/invalid_credentials'
+	elsif password != password2
+		message1 = 'Your passwords do not match'
+		message2 = 'Please try again.'
+		erb :create_account, locals: {message1: message1, message2: message2}
 	elsif username_not_unique?(username)
 		redirect '/username_not_unique'
 	else
