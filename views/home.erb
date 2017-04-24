@@ -16,7 +16,9 @@ Have an account?
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 	<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div><br>
+
       <a href="/" onclick="FB.logout();">Sign out</a>
+
 </form>
 <br><p>OR</p>
 
@@ -35,6 +37,13 @@ Have an account?
       console.log('User signed out.');
     });
   }
+//   function onSignIn(googleUser) {
+//   var profile = googleUser.getBasicProfile();
+//   console.log('ID: ' + profile.getId()); // 
+//   console.log('Name: ' + profile.getName());
+//   console.log('Image URL: ' + profile.getImageUrl());
+//   console.log('Email: ' + profile.getEmail());
+// }
 </script>
 
 </form>

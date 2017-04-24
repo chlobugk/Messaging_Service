@@ -59,19 +59,8 @@ def login_match?(log_username, log_password)
 	results
 end
 
-def after_sign_in_path_for(resource)
-  redirect '/message_home'
-end
 
-# def onSignIn(googleUser) 
-# 	{
-#   var profile = googleUser.getBasicProfile();
-#   console.log('ID: ' + profile.getId());
-#   console.log('Name: ' + profile.getName());
-#   console.log('Image URL: ' + profile.getImageUrl());
-#   console.log('Email: ' + profile.getEmail());
-# 	}
-# end
+
 
 
 

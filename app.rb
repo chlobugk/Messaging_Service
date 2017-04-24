@@ -86,18 +86,19 @@ post '/created' do
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
 		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
-		erb :message, locals: {username: username}
+		session[:username] = username
+		redirect '/message_home'
 	end
 end
 
 post '/message' do
-	username = params[:username]
-	erb :message, locals: {username: username}
+	session[:username] = params[:username]
+    redirect '/message_home'
 end
 
 get '/message_home' do
-
-	erb :message, locals: {username: session[:username]}
+	message = ''
+	erb :message, locals: {username: session[:username], message: message}
 
 end
 
@@ -111,7 +112,19 @@ post '/addfriend' do
 	messageID	integer CONSTRAINT firstkey PRIMARY KEY,
     message     text
 	)")
-	redirect '/message_home?username=' + username
+	session[:username] = username
+	redirect '/message_home'
 
 end
+
+get '/send_message' do 
+	message = params[:message]
+	erb :message, locals: {username: session[:username], message: message}
+end
+
+post '/send_message' do
+	message = params[:message]
+	erb :message, locals: {username: session[:username], message: message}
+end
+
 
