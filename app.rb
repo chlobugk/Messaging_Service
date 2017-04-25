@@ -83,8 +83,8 @@ post '/created' do
 	else
 		hashed_password = SCrypt::Password.create("#{password}")
 		#this post adds created account info to database
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
-		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
+		# db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
+		# accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		session[:username] = username
 		redirect '/message_home'
@@ -129,7 +129,7 @@ post '/send_message' do
 	date = 'now'
 	# if new_message?(session[:username], params[:friendname]
 	if username_not_unique?(friendname) == true
-		db.exec("INSERT INTO messages(user, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
+		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
 	end
 
 	redirect '/message_home'
