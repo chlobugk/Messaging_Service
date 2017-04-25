@@ -17,7 +17,7 @@ db = PG::Connection.new(db_params)
 
 get '/' do
 	session[:username] = nil
-	accounts=db.exec("SELECT full_name, username, password FROM accounts");
+	accounts=db.exec("SELECT full_name, username, password, friends FROM accounts");
 	erb :home
 end
 
@@ -83,8 +83,8 @@ post '/created' do
 	else
 		hashed_password = SCrypt::Password.create("#{password}")
 		#this post adds created account info to database
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
-		accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
+		# db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
+		# accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		session[:username] = username
 		redirect '/message_home'
@@ -97,8 +97,9 @@ post '/message_home' do
 end
 
 get '/message_home' do
-	messages=db.exec("SELECT user, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages}
+	accounts=db.exec("SELECT full_name, username, password, friends FROM accounts");
+	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
+	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add]}
 
 end
 
@@ -118,12 +119,19 @@ end
 # end
 
 post '/addfriend' do
-    friend_name = params[:friend_name]
+	session[:message_add] = nil
+    friend_name = params[:friend_name].to_s
 	username = session[:username].to_s
-	if friend_exist?(username, friend_name) == false
-		db.exec("SELECT friends FROM accounts WHERE username = '#{username}' ");
-		friends = friends + ',' + friend_name
-   		db.exec("UPDATE accounts SET friends = '#{friends} WHERE username = '#{username}' ");
+	if user_exist?(friend_name) == true
+		if friend_exist?(username, friend_name) == false
+		friend_list=db.exec("SELECT friends FROM accounts WHERE username = '#{username}' ");
+		friends = friend_list.to_s + ',' + friend_name
+   		db.exec("UPDATE accounts SET friends = '#{friends}' WHERE username = '#{username}' ");
+   		elsif friend_exist?(username, friend_name) == true
+   			session[:message_add] = 'This user is already your friend.'
+   		end
+   	elsif user_exist?(friend_name) == false
+   		session[:message_add] = 'User does not exist.'
    	end
     redirect '/message_home'
  end
@@ -140,7 +148,7 @@ post '/send_message' do
 	date = 'now'
 	# if new_message?(session[:username], params[:friendname]
 	if username_not_unique?(friendname) == true
-		db.exec("INSERT INTO messages(user, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
+		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
 	end
 
 	redirect '/message_home'
