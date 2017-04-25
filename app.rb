@@ -91,14 +91,14 @@ post '/created' do
 	end
 end
 
-post '/message' do
+post '/message_home' do
 	session[:username] = params[:username]
     redirect '/message_home'
 end
 
 get '/message_home' do
-	message = ''
-	erb :message, locals: {username: session[:username], message: message}
+	messages=db.exec("SELECT user, friend, message, date_time FROM messages")
+	erb :message, locals: {username: session[:username], messages: messages}
 
 end
 
@@ -117,14 +117,22 @@ post '/addfriend' do
 
 end
 
-get '/send_message' do 
-	message = params[:message]
-	erb :message, locals: {username: session[:username], message: message}
+get '/send_message' do
+	redirect '/message_home'
 end
 
+
 post '/send_message' do
+	username = session[:username]
+	friendname = params[:friendname]
 	message = params[:message]
-	erb :message, locals: {username: session[:username], message: message}
+	date = 'now'
+	# if new_message?(session[:username], params[:friendname]
+	if username_not_unique?(friendname) == true
+		db.exec("INSERT INTO messages(user, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
+	end
+
+	redirect '/message_home'
 end
 
 

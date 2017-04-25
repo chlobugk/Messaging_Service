@@ -59,6 +59,27 @@ def login_match?(log_username, log_password)
 	results
 end
 
+def new_message?(username, friendname)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	dbname=db.exec("SELECT user, friend FROM messages")
+	results = false
+	if username_not_unique?(friendname) == true
+		dbname.each do |item|
+			if item['from'] == username && item['to'] == friendname
+				results = true
+			end
+		end
+	end
+	results
+end
 
 
 

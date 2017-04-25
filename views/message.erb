@@ -8,8 +8,12 @@ Welcome <%=username%>
 </form><br><br>
 
 <form action='/send_message' method='post'>
-To: <input type='text' name='friend_name' placeholder='Search...'><br>
-<p class='message triangle-isosceles'><%=message%></p>
+To: <input type='text' name='friendname' placeholder='Search...'><br>
+<p class='message triangle-isosceles'>
+	<%messages.each do |new_message|%>
+		<%new_message["message"]%>
+	<%end%>
+</p>
 <input type='text' name='message' placeholder="message">
 <input type='submit' value='Send'>
 </form>
