@@ -81,6 +81,26 @@ def new_message?(username, friendname)
 	results
 end
 
+def friend_exist?(username, friend)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	dbname=db.exec("SELECT username, friends FROM accounts")
+	results = false
+	dbname.each do |item|
+		if item['username'] == username && item['friends'].include?(friend.to_s)
+			results = true
+		end
+	end
+	results
+end
 
 
 

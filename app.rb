@@ -102,20 +102,31 @@ get '/message_home' do
 
 end
 
+# post '/addfriend' do
+
+# 	friend_name = params[:friend_name].to_s
+# 	username = params[:username].to_s
+# 	table_name = "msg" + "_" + username + "_" + friend_name
+
+# 	db.exec("CREATE TABLE #{table_name} (
+# 	messageID	integer CONSTRAINT firstkey PRIMARY KEY,
+#     message     text
+# 	)")
+# 	session[:username] = username
+# 	redirect '/message_home'
+
+# end
+
 post '/addfriend' do
-
-	friend_name = params[:friend_name].to_s
-	username = params[:username].to_s
-	table_name = "msg" + "_" + username + "_" + friend_name
-
-	db.exec("CREATE TABLE #{table_name} (
-	messageID	integer CONSTRAINT firstkey PRIMARY KEY,
-    message     text
-	)")
-	session[:username] = username
-	redirect '/message_home'
-
-end
+    friend_name = params[:friend_name]
+	username = session[:username].to_s
+	if friend_exist?(username, friend_name) == false
+		db.exec("SELECT friends FROM accounts WHERE username = '#{username}' ");
+		friends = friends + ',' + friend_name
+   		db.exec("UPDATE accounts SET friends = '#{friends} WHERE username = '#{username}' ");
+   	end
+    redirect '/message_home'
+ end
 
 get '/send_message' do
 	redirect '/message_home'
