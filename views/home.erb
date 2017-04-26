@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 <center><form method='post' action='login'>
 Have an account?
 <input type='submit' value='Log In'>
@@ -7,7 +11,11 @@ Have an account?
 <p>
 <form method='post' action='message_home'><p>
 	<div id="fb-root"></div>
+<<<<<<< HEAD
 <script>(function(d, s, id) { 
+=======
+<script>(function(d, s, id) {
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
@@ -15,6 +23,7 @@ Have an account?
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 	<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div><br>
+<<<<<<< HEAD
 	  
 	  <a href="/" onclick="FB.logout();">Sign Out</a>
 </form>
@@ -27,6 +36,23 @@ Have an account?
 
 	<a href="#" onclick="signOut();">Sign Out</a>
  <script>
+=======
+
+      <a href="/" onclick="FB.logout();">Sign out</a>
+
+</form>
+<br><p>OR</p>
+
+
+<form method='post' action='message_home'>
+	Continue with Google<p>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<meta name="google-signin-client_id" content="182370847863-48of9fa5cjevk9fqrd5jta7vredjr16e.apps.googleusercontent.com">
+	<div class="g-signin2" data-onsuccess="onSignIn"></div> 
+
+	<a href="#" onclick="signOut();">Sign out</a>
+<script>
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
   function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
@@ -35,7 +61,11 @@ Have an account?
   }
 //   function onSignIn(googleUser) {
 //   var profile = googleUser.getBasicProfile();
+<<<<<<< HEAD
 //   console.log('ID: ' + profile.getId()); //
+=======
+//   console.log('ID: ' + profile.getId()); // 
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 //   console.log('Name: ' + profile.getName());
 //   console.log('Image URL: ' + profile.getImageUrl());
 //   console.log('Email: ' + profile.getEmail());
@@ -44,7 +74,16 @@ Have an account?
 
 </form>
 <br><p>OR</p>
+<<<<<<< HEAD
 
 <form method='post' action='create_account'>
 	<input type='submit' value='Create Account'>
 </form></center>
+=======
+
+
+<form method='post' action='create_account'>
+	<input type='submit' value='Create Account'>
+</form></center>
+
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54

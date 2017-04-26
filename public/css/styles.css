@@ -1,18 +1,32 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 .credentials{
 	color: crimson
 }
 
+<<<<<<< HEAD
 .message{ 
+=======
+.message{
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
   position: relative;
   padding: 15px;
   margin: 1em 0 3em;
   color: black;
   background: mediumaquamarine;
   border-radius: 10px;
+<<<<<<< HEAD
   background: linear-gradient(top, #f9d835, #f3961c); 
   width:20em;
 }
 
+=======
+  background: linear-gradient(top, #f9d835, #f3961c);
+  width:20em;
+}
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 .triangle-isosceles:after {
   content: "";
   display: block; /* reduce the damage in FF3.0 */
@@ -24,15 +38,28 @@
   border-style: solid;
   border-color: mediumaquamarine transparent;
 }
+<<<<<<< HEAD
  
+=======
+
+
+
+
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
 }
 
+<<<<<<< HEAD
 @media screen and (max-width: 300px) {
     .button { 
+=======
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+    .button {
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
         width: 100%;
     }
 }
@@ -59,35 +86,57 @@ button {
    text-decoration: none;
    vertical-align: middle;
    }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 .button:hover {
    border-top-color: #28597a;
    background: #28597a;
    color: #ccc;
    cursor: pointer;
    }
+<<<<<<< HEAD
 
 .button:active {
    border-top-color: #1b435e;
    background: #1b435e;
 }
 
+=======
+.button:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+   }
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 img {
     width: 20%;
     position: top left;
 }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 header {
   font-family: Helvetica;
   font-size: 40px;
   color: #03255b;
   border-style: none;
+<<<<<<< HEAD
   /*border-width: 5px;
   border-top-color: white;
   border-left-color: white;
   border-right-color: white;
   border-bottom-color: #03255b;*/
 
+=======
+/*  border-width: 5px;*/
+ /* border-top-color: white;
+  border-left-color: white;
+  border-right-color: white;*/
+ /* border-bottom-color: #03255b;*/
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
 }
 
 hr {
@@ -104,7 +153,14 @@ hr {
 }
 
 .font {
+<<<<<<< HEAD
 	font-family: Helvetica;
 	font-size: 30px;
 	color: #03255b;
 }
+=======
+  font-family: Helvetica;
+  font-size: 30px;
+  color: #03255b;
+}
+>>>>>>> ff8d3085d425a3328687b7aeeb3d4ee273b3bc54
