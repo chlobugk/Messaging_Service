@@ -13,5 +13,18 @@ To: <input type='text' name='friendname' placeholder='Search...'><br>
 </p>
 <input type='text' name='message' placeholder="message">
 <input type='submit' value='Send'>
-</form>
-
+</form><br>
+<table class='table' border='1'>
+	<thread>
+		<tr>
+			<th>Your Friends</th>
+		</tr>
+	</thread>
+	<tbody>
+		<%friends.each do |friend|%>
+		<tr>
+			<td><%=friend["friends"]%></td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>

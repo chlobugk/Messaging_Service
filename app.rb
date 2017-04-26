@@ -17,7 +17,7 @@ db = PG::Connection.new(db_params)
 
 get '/' do
 	session[:username] = nil
-	accounts=db.exec("SELECT full_name, username, password, friends FROM accounts");
+	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
 
@@ -26,6 +26,7 @@ post '/login' do
 end
 
 get '/login' do
+	session[:message_add] = nil
 	erb :login, locals: {message: ''}
 end
 
@@ -67,6 +68,7 @@ get '/username_not_unique' do
 end
 
 post '/created' do
+
 	full_name = params[:full_name]
 	username = params[:username]
 	password = params[:password]
@@ -86,72 +88,79 @@ post '/created' do
 		# db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
 		# accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
+		table_name = username + "_" + "friends"
+		db.exec("CREATE TABLE #{table_name} (
+			friends	text
+			)")
 		session[:username] = username
+		session[:message_add] = nil
 		redirect '/message_home'
 	end
 end
 
 post '/message_home' do
 	session[:username] = params[:username]
-    redirect '/message_home'
+	redirect '/message_home'
 end
 
 get '/message_home' do
-	accounts=db.exec("SELECT full_name, username, password, friends FROM accounts");
+	friends_table = session[:username] + "_" + "friends"
+	friends=db.exec("SELECT friends FROM #{friends_table}");
+	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add]}
+	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
 
 end
 
-# post '/addfriend' do
-
-# 	friend_name = params[:friend_name].to_s
-# 	username = params[:username].to_s
-# 	table_name = "msg" + "_" + username + "_" + friend_name
-
-# 	db.exec("CREATE TABLE #{table_name} (
-# 	messageID	integer CONSTRAINT firstkey PRIMARY KEY,
-#     message     text
-# 	)")
-# 	session[:username] = username
-# 	redirect '/message_home'
-
-# end
-
 post '/addfriend' do
 	session[:message_add] = nil
-    friend_name = params[:friend_name].to_s
-	username = session[:username].to_s
+	friend_name = params[:friend_name].to_s
+	username = params[:username].to_s
+	table_name = "msg" + "_" + username + "_" + friend_name
+	friends_table = username + "_" + "friends"
 	if user_exist?(friend_name) == true
 		if friend_exist?(username, friend_name) == false
-		friend_list=db.exec("SELECT friends FROM accounts WHERE username = '#{username}' ");
-		friends = friend_list.to_s + ',' + friend_name
-   		db.exec("UPDATE accounts SET friends = '#{friends}' WHERE username = '#{username}' ");
-   		elsif friend_exist?(username, friend_name) == true
+			db.exec("INSERT INTO #{friends_table}(friends) VALUES('#{friend_name}')")
+			db.exec("CREATE TABLE #{table_name} (
+			messageID	integer,
+		    message     text
+			)")
+		elsif friend_exist?(username, friend_name) == true
    			session[:message_add] = 'This user is already your friend.'
    		end
    	elsif user_exist?(friend_name) == false
    		session[:message_add] = 'User does not exist.'
    	end
-    redirect '/message_home'
- end
+	session[:username] = username
+	redirect '/message_home'
+
+end
+
+
+get '/message_home' do 
+	messages=db.exec("SELECT user, friend, message, date_time FROM messages")
+	erb :message, locals: {username: session[:username], messages: messages}
+end
+
 
 get '/send_message' do
 	redirect '/message_home'
 end
-
-
+ 
 post '/send_message' do
 	username = session[:username]
-	friendname = params[:friendname]
+	friendname = params [:friendname]
 	message = params[:message]
 	date = 'now'
+
 	# if new_message?(session[:username], params[:friendname]
 	if username_not_unique?(friendname) == true
 		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
 	end
 
+
+	if username_not_unique(friendname) == true
+		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')"); 
+	end
 	redirect '/message_home'
 end
-
-

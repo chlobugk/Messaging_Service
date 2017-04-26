@@ -4,7 +4,7 @@ load './local_env.rb' if File.exists?('./local_env.rb')
 def valid_password?(password)
 	password.to_s.length > 5
 end
-
+ 
 def valid_username?(username)
 	username.to_s.length > 0
 end
@@ -27,7 +27,7 @@ def username_not_unique?(new_username)
 	}
 
 	db = PG::Connection.new(db_params)
-	
+
 	dbname=db.exec("SELECT username FROM accounts")
 	results = false
 	dbname.each do |item|
@@ -40,11 +40,11 @@ end
 
 def login_match?(log_username, log_password)
 	db_params = {
-    host: ENV['host'],
-    port: ENV['port'],
+    host: ENV['host'], 
+    port: ENV['port'], 
     dbname: ENV['db_name'],
     user: ENV['user'],
-    password: ENV['password']
+    password: ENV['password'] 
 	}
 
 	db = PG::Connection.new(db_params)
@@ -69,16 +69,18 @@ def new_message?(username, friendname)
 	}
 
 	db = PG::Connection.new(db_params)
-	dbname=db.exec("SELECT user, friend FROM messages")
+
+	dbname=db.exec("SELECT user, friend FROM messages") 
 	results = false
 	if username_not_unique?(friendname) == true
 		dbname.each do |item|
-			if item['from'] == username && item['to'] == friendname
+			if item['from'] == username && item['to'] == friendname 
 				results = true
 			end
 		end
 	end
 	results
+
 end
 
 def friend_exist?(username, friend)
@@ -91,11 +93,12 @@ def friend_exist?(username, friend)
 	}
 
 	db = PG::Connection.new(db_params)
-	
-	dbname=db.exec("SELECT username, friends FROM accounts")
+
+	friends_table = username + "_" "friends"
+	dbname=db.exec("SELECT friends FROM #{friends_table}")
 	results = false
 	dbname.each do |item|
-		if item['username'] == username && item['friends'].to_s.include?(friend)
+		if item['friends'] == friend
 			results = true
 		end
 	end
@@ -122,10 +125,5 @@ def user_exist?(user)
 	end
 	results
 end
-
-
-
-
-
 
 

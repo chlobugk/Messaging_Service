@@ -3,16 +3,17 @@
 	color: crimson
 }
 
-.message{
+.message{ 
   position: relative;
   padding: 15px;
   margin: 1em 0 3em;
   color: black;
   background: mediumaquamarine;
   border-radius: 10px;
-  background: linear-gradient(top, #f9d835, #f3961c);
+  background: linear-gradient(top, #f9d835, #f3961c); 
   width:20em;
 }
+
 .triangle-isosceles:after {
   content: "";
   display: block; /* reduce the damage in FF3.0 */
@@ -25,18 +26,15 @@
   border-color: mediumaquamarine transparent;
 }
 
-
-
-
 .clearfix::after {
     content: "";
     clear: both;
     display: table;
 }
 
-/* Change styles for cancel button and signup button on extra small screens */
+
 @media screen and (max-width: 300px) {
-    .button {
+    .button { 
         width: 100%;
     }
 }
@@ -63,16 +61,25 @@ button {
    text-decoration: none;
    vertical-align: middle;
    }
+
 .button:hover {
    border-top-color: #28597a;
    background: #28597a;
    color: #ccc;
    cursor: pointer;
    }
+
+
+.button:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+}
+
 .button:active {
    border-top-color: #1b435e;
    background: #1b435e;
    }
+
 img {
     width: 20%;
     position: top left;
@@ -83,11 +90,19 @@ header {
   font-size: 40px;
   color: #03255b;
   border-style: none;
+
+  /*border-width: 5px;
+  border-top-color: white;
+  border-left-color: white;
+  border-right-color: white;
+  border-bottom-color: #03255b;*/
+
 /*  border-width: 5px;*/
  /* border-top-color: white;
   border-left-color: white;
   border-right-color: white;*/
  /* border-bottom-color: #03255b;*/
+
 }
 
 hr {
@@ -104,7 +119,20 @@ hr {
 }
 
 .font {
-  font-family: Helvetica;
-  font-size: 30px;
-  color: #03255b;
+
+	font-family: Helvetica;
+	font-size: 30px;
+	color: #03255b;
 }
+
+.table {
+  display: table-cell;
+  color: white;
+  background-color: #666699;
+  border-collapse: collapse;
+  border-style:solid;
+  border-color:navy;
+  border-width:4px;
+}
+
+
