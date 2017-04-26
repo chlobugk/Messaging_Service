@@ -1,0 +1,19 @@
+Welcome <%=username%>
+<br>
+
+<form action="/addfriend" method="post">
+	<input type="hidden" name="username" value=<%=username%>>
+	<input type="text" name="friend_name" placeholder="Add Friend">
+	<input type='submit'>
+</form><br><br>
+
+<form action='/send_message' method='post'>
+To: <input type='text' name='friendname' placeholder='Search...'><br>
+<p class='message triangle-isosceles'>
+	<%messages.each do |new_message|%>
+		<%new_message["message"]%>
+	<%end%>
+</p>
+<input type='text' name='message' placeholder="message">
+<input type='submit' value='Send'>
+</form>
