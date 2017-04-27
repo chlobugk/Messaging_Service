@@ -1,0 +1,22 @@
+<div class="layout">
+<form action="message_home" action="post">
+<input type='submit' value='Go Back'>
+</form>
+<center class="layout settings">
+<%=username%> account settings<br><br>
+<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
+	<thread>
+		<tr>
+			<th>Your Friends</th>
+		</tr>
+	</thread>
+	<tbody>
+		<%friends.each do |friend|%>
+		<tr>
+			<td><%=friend["friends"]%></td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>
+</center>
+</div>

@@ -1,6 +1,12 @@
-Welcome <%=username%>
-<br>
-
+<div class="layout">
+<form action="home" method="post">
+<input type="submit" value="Mined Minds Home Page">
+</form>
+<div class="account">Welcome <%=username%><br>
+<form action='settings' method='post'>
+<input type="submit" value="Account Settings"></div>
+</form>
+<p style="margin-top:-3%">
 <form action="/addfriend" method="post">
 	<input type="hidden" name="username" value=<%=username%>>
 	<input type="text" name="friend_name" placeholder="Add Friend">
@@ -14,7 +20,8 @@ To: <input type='text' name='friendname' placeholder='Search...'><br>
 <input type='text' name='message' placeholder="message">
 <input type='submit' value='Send'>
 </form><br>
-<table class='table' border='1'>
+
+<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
 			<th>Your Friends</th>
@@ -28,3 +35,6 @@ To: <input type='text' name='friendname' placeholder='Search...'><br>
 		<%end%>
 	</tbody>
 </table>
+</p>
+</div>
+

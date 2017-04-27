@@ -1,3 +1,20 @@
+.layout{
+   margin: 0cm 1cm 0cm 1cm;
+}
+
+.account{
+  margin-top: -2%;
+  text-align: right;
+  font-family: Helvetica;
+  font-size: 20px;
+  color: #03255b;
+}
+
+.settings{
+  font-family: Helvetica;
+  font-size: 20px;
+  color: #03255b;
+}
 
 .credentials{
 	color: crimson
@@ -133,6 +150,7 @@ hr {
   border-style:solid;
   border-color:navy;
   border-width:4px;
+  font-family: Helvetica;
 }
 
 

@@ -137,12 +137,6 @@ post '/addfriend' do
 end
 
 
-get '/message_home' do 
-	messages=db.exec("SELECT user, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages}
-end
-
-
 get '/send_message' do
 	redirect '/message_home'
 end
@@ -163,4 +157,16 @@ post '/send_message' do
 		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')"); 
 	end
 	redirect '/message_home'
+end
+
+get '/settings' do
+	friends_table = session[:username] + "_" + "friends"
+	friends=db.exec("SELECT friends FROM #{friends_table}");
+	accounts=db.exec("SELECT full_name, username, password FROM accounts");
+	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
+	erb :settings, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
+end
+
+post '/settings' do
+	redirect '/settings'
 end
