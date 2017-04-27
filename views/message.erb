@@ -2,42 +2,37 @@
 <form action="/" method="post">
 <input type="submit" value="Mined Minds Home Page">
 </form>
+<form action='/send_message' method='post'>
+<center>
+<input type="text" name="friend" placeholder="Start Messaging With...">
+<input type="submit" value="Go">
+</center>
+</form>
 <div class="account">Welcome <%=username%><br>
 <form action='settings' method='post'>
 <input type="submit" value="Account Settings"></div>
-</form>
+</form><br>
 <p style="margin-top:-3%">
 <form action="/addfriend" method="post">
 	<input type="hidden" name="username" value=<%=username%>>
 	<input type="text" name="friend_name" placeholder="Add Friend">
 	<input type='submit'><p class='credentials'><%=message1%></p>
-</form><br><br>
-
-<form action='/send_message' method='post'>
-<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
+</form><br>
+</p>
+ 
+ <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
-			<th>Send To:</th>
 			<th>Your Friends</th>
 		</tr>
 	</thread>
 	<tbody>
 		<%friends.each do |friend|%>
 		<tr>
-			<td><center><input type="checkbox" checked_value = "1", unchecked_value = "0")></center></td>
 			<td><%=friend["friends"]%></td>
 		</tr>
 		<%end%>
 	</tbody>
-</table><br>
-<div class="message_box">
-<p class='message triangle-isosceles'>
-</p>
-<input type='text' name='message' placeholder="message">
-<input type='submit' value='Send'>
-</form><br>
-</div>
-</div>
+</table></div<br>
 
-<%=message_send%>
 

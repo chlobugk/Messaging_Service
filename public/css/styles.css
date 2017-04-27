@@ -1,9 +1,9 @@
 .layout{
-   margin: 0cm 1cm 0cm 1cm;
+   margin: 0cm 2cm 0cm 2cm;
 }
 
 .account{
-  margin-top: -2%;
+  margin-top: -5%;
   text-align: right;
   font-family: Helvetica;
   font-size: 20px;
@@ -21,8 +21,12 @@
 }
 
 .message_box{
-  margin-top: -14%;
+  margin-top: -5%;
   margin-left: 25%
+}
+
+.msg{
+  display: table-cell;
 }
 
 .message{ 

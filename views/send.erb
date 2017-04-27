@@ -1,0 +1,41 @@
+<form class="layout" action='/send_message' method='post'>
+<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
+	<thread>
+		<tr>
+			<th>Your Friends</th>
+		</tr>
+	</thread>
+	<tbody>
+		<%friends.each do |friend|%>
+		<tr>
+			<td><%=friend["friends"]%></td>
+		</tr>
+		<%end%>
+	</tbody>
+</table><br>
+<div class="message_box">
+<p class='message triangle-isosceles'>
+<% if sendfriend.to_s.length > 0 %>
+	<table border="1" class="msg">
+	<thread>
+		<tr>
+			<th><%=sendfriend%></th>
+			<th></th>
+		</tr>
+	</thread>
+	<tbody>
+		<%msg_table.each do |msg|%>
+		<tr>
+			<td><%=msg["to"]%></td>
+			<td><%=msg["from"]%></td>
+		</tr>
+		<%end%>
+	</tbody>
+	</table>
+<% end %>
+</p>
+<input type='text' name='message' placeholder="message">
+<input type='submit' value='Send'>
+</form><br>
+</div>
+</div>

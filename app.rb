@@ -17,6 +17,7 @@ db = PG::Connection.new(db_params)
 
 get '/' do
 	session[:username] = nil
+	session[:sendfriend] = nil
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
@@ -110,11 +111,11 @@ post '/message_home' do
 end
 
 get '/message_home' do
-	friends_table = session[:username] + "_" + "friends"
+	friends_table = session[:username].to_s + "_" + "friends"
 	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends, message_send: session[:message_send]}
+	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
 
 end
 
@@ -122,15 +123,20 @@ post '/addfriend' do
 	session[:message_add] = nil
 	friend_name = params[:friend_name].to_s
 	username = params[:username].to_s
-	table_name = "msg" + "_" + username + "_" + friend_name
+	table_name_send = "msg" + "_" + username + "_" + friend_name
+	table_name_receive = "msg" + "_" + friend_name + "_" + username
 	friends_table = username + "_" + "friends"
 	if user_exist?(friend_name) == true
 		if friend_exist?(username, friend_name) == false
 			db.exec("INSERT INTO #{friends_table}(friends) VALUES('#{friend_name}')")
-			db.exec("CREATE TABLE #{table_name} (
-			messageID	integer,
-		    message     text
-			)")
+			# db.exec("CREATE TABLE #{table_name_send} (
+			# send	text,
+		 #    receive     text
+			# )")
+			# db.exec("CREATE TABLE #{table_name_receive} (
+			# send	text,
+		 #    receive     text
+			# )")
 		elsif friend_exist?(username, friend_name) == true
    			session[:message_add] = 'This user is already your friend.'
    		end
@@ -144,16 +150,23 @@ end
 
 
 get '/send_message' do
-	redirect '/message_home'
+	friends_table = session[:username].to_s + "_" + "friends"
+	friends=db.exec("SELECT friends FROM #{friends_table}");
+	from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
+		if session[:sendfriend].to_s.length > 0
+		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
+		else
+		msg_table=nil
+		end
+	erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
  
 post '/send_message' do
-	if params[:checkbox] == '1'
-		session[:message_send] == 'yes'
-	else
-		session[:message_send] == 'no'
+	session[:sendfriend] = params[:friend]
+	if friend_exist?(session[:username], params[:friend]) == true
+		send_message(session[:username], params[:friend])
 	end
-	redirect '/message_home'
+	redirect '/send_message'
 end
 
 get '/settings' do

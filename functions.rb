@@ -94,7 +94,7 @@ def friend_exist?(username, friend)
 
 	db = PG::Connection.new(db_params)
 
-	friends_table = username + "_" "friends"
+	friends_table = username + "_" + "friends"
 	dbname=db.exec("SELECT friends FROM #{friends_table}")
 	results = false
 	dbname.each do |item|
@@ -124,6 +124,24 @@ def user_exist?(user)
 		end
 	end
 	results
+end
+
+def send_message(username, friend)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	from_table = "msg" + "_" + username + "_" + friend
+	to_table = "msg" + "_" + friend + "_" + username
+	dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{params[:message]}')");
+	dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{params[:message]}')");
+
 end
 
 
