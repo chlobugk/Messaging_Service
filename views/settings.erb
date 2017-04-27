@@ -7,16 +7,21 @@
 <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
-			<th>Your Friends</th>
+			<th>Following</th>
+			<th>Followers</th>
 		</tr>
 	</thread>
 	<tbody>
 		<%friends.each do |friend|%>
 		<tr>
-			<td><%=friend["friends"]%></td>
+			<td><%=friend["following"]%></td>
+			<td><%=friend["followers"]%></td>
 		</tr>
 		<%end%>
 	</tbody>
 </table>
 </center>
 </div>
+<form action='delete' method='post'>
+<input type="submit" value='Delete Account'>
+</form>

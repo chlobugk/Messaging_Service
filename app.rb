@@ -97,7 +97,8 @@ post '/created' do
 		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		table_name = username + "_" + "friends"
 		db.exec("CREATE TABLE #{table_name} (
-			friends	text
+			following	text,
+		    followers     text
 			)")
 		session[:username] = username
 		session[:message_add] = nil
@@ -112,7 +113,7 @@ end
 
 get '/message_home' do
 	friends_table = session[:username].to_s + "_" + "friends"
-	friends=db.exec("SELECT friends FROM #{friends_table}");
+	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
 	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
@@ -120,23 +121,26 @@ get '/message_home' do
 end
 
 post '/addfriend' do
+	
 	session[:message_add] = nil
 	friend_name = params[:friend_name].to_s
 	username = params[:username].to_s
 	table_name_send = "msg" + "_" + username + "_" + friend_name
 	table_name_receive = "msg" + "_" + friend_name + "_" + username
-	friends_table = username + "_" + "friends"
+	following_table = username + "_" + "friends"
+	follower_table = friend_name + "_" + "friends"
 	if user_exist?(friend_name) == true
 		if friend_exist?(username, friend_name) == false
-			db.exec("INSERT INTO #{friends_table}(friends) VALUES('#{friend_name}')")
-			# db.exec("CREATE TABLE #{table_name_send} (
-			# send	text,
-		 #    receive     text
-			# )")
-			# db.exec("CREATE TABLE #{table_name_receive} (
-			# send	text,
-		 #    receive     text
-			# )")
+			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
+			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
+			db.exec("CREATE TABLE #{table_name_send} (
+			send	text,
+		    receive     text
+			)")
+			db.exec("CREATE TABLE #{table_name_receive} (
+			send	text,
+		    receive     text
+			)")
 		elsif friend_exist?(username, friend_name) == true
    			session[:message_add] = 'This user is already your friend.'
    		end
@@ -149,29 +153,31 @@ post '/addfriend' do
 end
 
 
-get '/send_message' do
+get '/send' do
+	send_message(session[:username], session[:sendfriend])
+
 	friends_table = session[:username].to_s + "_" + "friends"
-	friends=db.exec("SELECT friends FROM #{friends_table}");
+	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
-		if session[:sendfriend].to_s.length > 0
-		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
-		else
-		msg_table=nil
-		end
+
+	msg_table=db.exec("SELECT send, receive FROM #{from_table}");
+
 	erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
  
 post '/send_message' do
 	session[:sendfriend] = params[:friend]
-	if friend_exist?(session[:username], params[:friend]) == true
-		send_message(session[:username], params[:friend])
+	if session[:sendfriend].to_s.length > 0 && user_exist?(session[:sendfriend])
+		# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
+		redirect '/send'
+	else
+		redirect '/message_home'
 	end
-	redirect '/send_message'
 end
 
 get '/settings' do
 	friends_table = session[:username] + "_" + "friends"
-	friends=db.exec("SELECT friends FROM #{friends_table}");
+	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
 	erb :settings, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
@@ -179,4 +185,10 @@ end
 
 post '/settings' do
 	redirect '/settings'
+end
+
+post '/delete' do
+	trash = session[:username]
+db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
+	redirect '/'
 end
