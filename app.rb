@@ -21,6 +21,12 @@ get '/' do
 	erb :home
 end
 
+post '/' do
+	session[:username] = nil
+	accounts=db.exec("SELECT full_name, username, password FROM accounts");
+	erb :home
+end
+
 post '/login' do
 	redirect '/login'
 end
@@ -108,7 +114,7 @@ get '/message_home' do
 	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
+	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends, message_send: session[:message_send]}
 
 end
 
@@ -142,19 +148,10 @@ get '/send_message' do
 end
  
 post '/send_message' do
-	username = session[:username]
-	friendname = params [:friendname]
-	message = params[:message]
-	date = 'now'
-
-	# if new_message?(session[:username], params[:friendname]
-	if username_not_unique?(friendname) == true
-		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')");
-	end
-
-
-	if username_not_unique(friendname) == true
-		db.exec("INSERT INTO messages(user_name, friend, message, date_time) VALUES('#{username}', '#{friendname}', '#{message}', '#{date}')"); 
+	if params[:checkbox] == '1'
+		session[:message_send] == 'yes'
+	else
+		session[:message_send] == 'no'
 	end
 	redirect '/message_home'
 end
