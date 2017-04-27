@@ -1,4 +1,15 @@
-<form class="layout" action='/send_message' method='post'>
+<div class="layout">
+
+<form action='message_home' method='post'>
+<input type='submit' value='Back To Home Feed'>
+</form>
+
+<div class="account" style="margin-top: -3%">Welcome <%=username%><br>
+<form action='settings' method='post'>
+<input type="submit" value="Account Settings"></div>
+</form>
+
+<form action='/send' method='post'>
 <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
@@ -15,7 +26,8 @@
 		<%end%>
 	</tbody>
 </table><br>
-<div class="message_box">
+
+<div class="message_box" style="margin-top: -16%">
 <p class='message triangle-isosceles'>
 <% if sendfriend.to_s.length > 0 %>
 	<table border="1" class="msg">
@@ -39,5 +51,6 @@
 <input type='text' name='message' placeholder="message">
 <input type='submit' value='Send'>
 </form><br>
+</div>
 </div>
 </div>
