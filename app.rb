@@ -163,8 +163,8 @@ post '/send' do
 	from_table = "msg" + "_" + username + "_" + friend
 	to_table = "msg" + "_" + friend + "_" + username
 
-	dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{message}')");
-	dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{message}')");
+	dbname=db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{message}', ' ')");
+	dbname=db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{message}', ' ')");
 
 	redirect '/send_message'
 end

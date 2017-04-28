@@ -22,11 +22,12 @@
 
 .message_box{
   margin-top: -5%;
-  margin-left: 25%
+
 }
 
 .msg{
-  width:40em
+  border: none;
+  overflow:auto;
 }
 
 .message{ 
