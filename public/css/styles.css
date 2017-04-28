@@ -22,12 +22,21 @@
 
 .message_box{
   margin-top: -5%;
-
 }
 
 .msg{
   border: none;
   overflow:auto;
+}
+
+.sent{
+  background-color: blue;
+  color: white;
+}
+
+.received{
+  background-color: #1a1a1a;
+  color: white;
 }
 
 .message{ 
