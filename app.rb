@@ -194,7 +194,7 @@ post '/send_message' do
 end
 
 get '/settings' do
-	friends_table = session[:username] + "_" + "friends"
+	friends_table = session[:username].to_s + "_" + "friends"
 	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
