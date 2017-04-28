@@ -91,11 +91,8 @@ post '/created' do
 		redirect '/username_not_unique'
 	else
 		hashed_password = BCrypt::Password.create("#{password}")
-		#hashed_password = SCrypt::Password.create("#{password}")
-		#this post adds created account info to database
-		# db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
-		# accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
-		db.exec("INSERT INTO accounts(full_name, username, test_password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
+
+		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		table_name = username + "_" + "friends"
 		db.exec("CREATE TABLE #{table_name} (
 			following	text,
