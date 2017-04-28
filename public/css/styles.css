@@ -3,7 +3,7 @@
 }
 
 .account{
-  margin-top: -5%;
+  margin-top: -13%;
   text-align: right;
   font-family: Helvetica;
   font-size: 20px;
@@ -11,7 +11,7 @@
 }
 
 .delete_button{
-margin-top: 15%;
+margin-top: 12%;
 font-size: 20px;
 font-family: Helvetica;
 color:red;
@@ -37,12 +37,12 @@ color:red;
 }
 
 .sent{
-  background-color: blue;
+  background-color:  #68679F;
   color: white;
 }
 
 .received{
-  background-color: #1a1a1a;
+  background-color: #66C3AD;
   color: white;
 }
 
@@ -166,6 +166,13 @@ hr {
 	font-family: Helvetica;
 	font-size: 30px;
 	color: #03255b;
+}
+
+.fontuser {
+
+  font-family: Helvetica;
+  font-size: 20px;
+  color: #03255b;
 }
 
 .table {
