@@ -130,7 +130,10 @@ post '/addfriend' do
 	table_name_receive = "msg" + "_" + friend_name + "_" + username
 	following_table = username + "_" + "friends"
 	follower_table = friend_name + "_" + "friends"
-	if user_exist?(friend_name) == true
+	if followers?(username, friend_name) == true && friend_exist?(username, friend_name) == false
+		db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
+
+	elsif user_exist?(friend_name) == true
 		if friend_exist?(username, friend_name) == false
 			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
 			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
@@ -147,30 +150,33 @@ post '/addfriend' do
    		end
    	else
    		session[:message_add] = 'User does not exist.'
+   		
    	end
 	session[:username] = username
 	redirect '/message_home'
 
 end
 
+post '/send' do
+	redirect '/send_message'
+end
 
-get '/send' do
-	send_message(session[:username], session[:sendfriend])
+get '/send_message' do
+	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
+		send_message(session[:username], session[:sendfriend])
+		friends_table = session[:username].to_s + "_" + "friends"
+		friends=db.exec("SELECT following, followers FROM #{friends_table}");
+		from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
+		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
 
-	friends_table = session[:username].to_s + "_" + "friends"
-	friends=db.exec("SELECT following, followers FROM #{friends_table}");
-	from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
-
-	msg_table=db.exec("SELECT send, receive FROM #{from_table}");
-
-	erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
+		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
  
 post '/send_message' do
+	session[:sendfriend] = nil
 	session[:sendfriend] = params[:friend]
 	if session[:sendfriend].to_s.length > 0 && user_exist?(session[:sendfriend])
-		# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
-		redirect '/send'
+		redirect '/send_message'
 	else
 		redirect '/message_home'
 	end
