@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'pg'
-require 'scrypt'
+require 'bcrypt'
 require_relative 'functions.rb'
 require_relative 'controller.rb'
 load './local_env.rb' if File.exists?('./local_env.rb')
@@ -90,11 +90,12 @@ post '/created' do
 	elsif username_not_unique?(username)
 		redirect '/username_not_unique'
 	else
-		hashed_password = SCrypt::Password.create("#{password}")
+		hashed_password = BCrypt::Password.create("#{password}")
+		#hashed_password = SCrypt::Password.create("#{password}")
 		#this post adds created account info to database
 		# db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{password}')");
 		# accounts=db.exec("SELECT full_name, username, password FROM accounts"); 
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
+		db.exec("INSERT INTO accounts(full_name, username, test_password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 		table_name = username + "_" + "friends"
 		db.exec("CREATE TABLE #{table_name} (
 			following	text,
@@ -144,7 +145,7 @@ post '/addfriend' do
 		elsif friend_exist?(username, friend_name) == true
    			session[:message_add] = 'This user is already your friend.'
    		end
-   	elsif user_exist?(friend_name) == false
+   	else
    		session[:message_add] = 'User does not exist.'
    	end
 	session[:username] = username
