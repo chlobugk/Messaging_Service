@@ -18,6 +18,17 @@ GEM
     extlib (0.9.16)
     faraday (0.12.0.1)
       multipart-post (>= 1.2, < 3)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    ffi (1.9.18)
+    ffi (1.9.18-x64-mingw32)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
+=======
+>>>>>>> f6603abd2a195eb21c7a28945eda04b7c22b571d
+>>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
     google-api-client (0.8.2)
       activesupport (>= 3.2)
       addressable (~> 2.3)
@@ -67,7 +78,15 @@ DEPENDENCIES
   sinatra (~> 1.4.0)
 
 RUBY VERSION
+<<<<<<< HEAD
    ruby 2.2.6p396
+=======
+<<<<<<< HEAD
+   ruby 2.2.5p319
+=======
+   ruby 2.2.6p396
+>>>>>>> f6603abd2a195eb21c7a28945eda04b7c22b571d
+>>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 
 BUNDLED WITH
    1.14.6
