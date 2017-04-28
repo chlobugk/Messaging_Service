@@ -157,7 +157,15 @@ post '/addfriend' do
 end
 
 post '/send' do
-	session[:message] = params[:message]
+	message = params[:message]
+	username = session[:username].to_s
+	friend = session[:sendfriend].to_s	
+	from_table = "msg" + "_" + username + "_" + friend
+	to_table = "msg" + "_" + friend + "_" + username
+
+	dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{message}')");
+	dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{message}')");
+
 	redirect '/send_message'
 end
 
@@ -165,16 +173,11 @@ get '/send_message' do
 	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
 		username = session[:username].to_s
 		friend = session[:sendfriend].to_s
-		message = session[:message].to_s
 		from_table = "msg" + "_" + username + "_" + friend
 		to_table = "msg" + "_" + friend + "_" + username
 
-		dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{message}')");
-		dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{message}')");
-
-		friends_table = session[:username].to_s + "_" + "friends"
+		friends_table = username + "_" + "friends"
 		friends=db.exec("SELECT following, followers FROM #{friends_table}");
-		from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
 		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
 
 		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
