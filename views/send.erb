@@ -1,0 +1,62 @@
+<html>
+
+<div class="layout">
+
+<form action='/message_home' method='get'>
+	<input type='submit' value='Back To Home Feed'>
+</form>
+
+	<div class="account" style="margin-top: -3%">Welcome <%=username%><br>
+		<form action='settings' method='post'>
+			<input type="submit" value="Account Settings"></div>
+		</form>
+
+	<form action='/send' method='post'>
+	<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
+		<thread>
+			<tr>
+				<th>Following</th>
+				<th>Followers</th>
+			</tr>
+		</thread>
+		<tbody>
+			<%friends.each do |friend|%>
+			<tr>
+				<td><%=friend["following"]%></td>
+				<td><%=friend["followers"]%></td>
+			</tr>
+			<%end%>
+		</tbody>
+	</table><br>
+
+	<center>
+	<div class="message_box" style="margin-top: -16%">
+	<!-- <p class='message triangle-isosceles'> -->
+	<h4>Messaging ><%sendfriend%></h4><br>
+		<table class="msg" cellspacing="0" cellpadding="1" border="1" width="300">
+			<thread>
+				<tr>
+						<th><%=sendfriend%></th>
+						<th>Me</th>
+				</tr>
+			</thread>
+			<tbody>
+				<%msg_table.each do |msg|%>
+				<tr>
+						<td><%=msg["recieve"]%></td>
+						<td><%=msg["send"]%></td>
+				</tr>
+				<%end%>
+			</tbody>
+			</table>
+
+	</p>
+	<input type='text' name='message' placeholder="message">
+	<input type='submit' value='Send'>
+	</form><br>
+	</div>
+	</center>
+	</div>
+</div>
+
+</html>

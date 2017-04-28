@@ -1,0 +1,41 @@
+<form action="message_home" action="post">
+<input type='submit' value='Go Back'>
+</form>
+<center class="layout settings">
+<u><%=username%>'s Account Settings<br><br></u>
+
+<table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
+	<thread>
+		<tr>
+			<th>Following</th>
+			<th>Followers</th>
+		</tr>
+	</thread>
+	<tbody>
+		<%friends.each do |friend|%>
+		<tr>
+			<td><%=friend["following"]%></td>
+			<td><%=friend["followers"]%></td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>
+</center>
+
+<u>Manage Friends List<br><br></u>
+
+<form action="/deletefriend" method="post">
+	<input type="hidden" name="username" value=<%=username%>>
+	<input type="text" name="friend_name" placeholder="Delete Friend">
+	<input type='submit'><p class='credentials'><%=message1%></p>
+</form>
+</p>
+<br>
+
+</div>
+<center>
+<form class="delete_button" action='delete' method='post'>
+<input type="submit" value='Delete Account'>
+</center>
+</form>
+<br>
