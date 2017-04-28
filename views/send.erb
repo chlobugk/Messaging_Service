@@ -28,25 +28,25 @@
 </table><br>
 
 <div class="message_box" style="margin-top: -16%">
-<p class='message triangle-isosceles'>
-<% if sendfriend.to_s.length > 0 %>
-	<table border="1" class="msg">
+<!-- <p class='message triangle-isosceles'> -->
+<h4 style="margin-left:20%"><%=sendfriend%></h4><br>
+	<table class="msg">
 	<thread>
 		<tr>
-			<th><%=sendfriend%></th>
+			<th></th>
 			<th></th>
 		</tr>
 	</thread>
 	<tbody>
 		<%msg_table.each do |msg|%>
 		<tr>
-			<td><%=msg["to"]%></td>
-			<td><%=msg["from"]%></td>
+			<td><%=msg["receive"]%></td>
+			<td><%=msg["send"]%></td>
 		</tr>
 		<%end%>
 	</tbody>
 	</table>
-<% end %>
+
 </p>
 <input type='text' name='message' placeholder="message">
 <input type='submit' value='Send'>

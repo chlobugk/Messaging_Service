@@ -108,11 +108,13 @@ end
 
 post '/message_home' do
 	session[:username] = params[:username]
-	redirect '/message_home'
+	username = params[:username]
+	redirect '/message_home?username=' + username
 end
 
 get '/message_home' do
-	friends_table = session[:username].to_s + "_" + "friends"
+	username = session[:username].to_s
+	friends_table = username.to_s + "_" + "friends"
 	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
@@ -149,7 +151,7 @@ post '/addfriend' do
    		end
    	elsif user_exist?(friend_name) == false
    		session[:message_add] = 'User does not exist.'
-   		
+
    	end
 	session[:username] = username
 	redirect '/message_home'
@@ -157,12 +159,21 @@ post '/addfriend' do
 end
 
 post '/send' do
+	session[:message] = params[:message]
 	redirect '/send_message'
 end
 
 get '/send_message' do
 	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
-		send_message(session[:username], session[:sendfriend])
+		username = session[:username].to_s
+		friend = session[:sendfriend].to_s
+		message = session[:message].to_s
+		from_table = "msg" + "_" + username + "_" + friend
+		to_table = "msg" + "_" + friend + "_" + username
+
+		dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{message}')");
+		dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{message}')");
+
 		friends_table = session[:username].to_s + "_" + "friends"
 		friends=db.exec("SELECT following, followers FROM #{friends_table}");
 		from_table = "msg" + "_" + session[:username].to_s + "_" + session[:sendfriend].to_s
