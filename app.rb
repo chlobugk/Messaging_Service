@@ -18,20 +18,12 @@ db = PG::Connection.new(db_params)
 get '/' do
 	session[:username] = nil
 	session[:sendfriend] = nil
-<<<<<<< HEAD
 	accounts=db.exec("SELECT full_name, username FROM accounts");
-=======
-	accounts=db.exec("SELECT full_name, username, password FROM accounts");
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	erb :home
 end
 
 post '/' do
-<<<<<<< HEAD
 	session[:username] = nil 
-=======
-	session[:username] = nil
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
 end
@@ -83,7 +75,6 @@ get '/username_not_unique' do
 end
 
 post '/created' do
-<<<<<<< HEAD
 		full_name = params[:full_name]
 		username = params[:username]
 		password = params[:password]
@@ -110,35 +101,6 @@ post '/created' do
 			session[:message_add] = nil
 			redirect 'message_home'
 		end
-=======
-
-	full_name = params[:full_name]
-	username = params[:username]
-	password = params[:password]
-	password2 = params[:password2]
-
-	if valid_credentials?(full_name, username, password) == false	
-		redirect '/invalid_credentials'
-	elsif password != password2
-		message1 = 'Your passwords do not match'
-		message2 = 'Please try again.'
-		erb :create_account, locals: {message1: message1, message2: message2}
-	elsif username_not_unique?(username)
-		redirect '/username_not_unique'
-	else
-		hashed_password = BCrypt::Password.create("#{password}")
-
-		db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
-		table_name = username + "_" + "friends"
-		db.exec("CREATE TABLE #{table_name} (
-			following	text,
-		    followers     text
-			)")
-		session[:username] = username
-		session[:message_add] = nil
-		redirect '/message_home'
-	end
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 end
 
 post '/message_home' do
@@ -163,27 +125,18 @@ post '/addfriend' do
 	friend_name = params[:friend_name].to_s
 	username = params[:username].to_s
 	table_name_send = "msg" + "_" + username + "_" + friend_name
-<<<<<<< HEAD
 	table_name_recieve = "msg" + "_" + friend_name + "_" + username
-=======
-	table_name_receive = "msg" + "_" + friend_name + "_" + username
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	following_table = username + "_" + "friends"
 	follower_table = friend_name + "_" + "friends"
 	if followers?(username, friend_name) == true && friend_exist?(username, friend_name) == false
 		db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
-<<<<<<< HEAD
 	
-=======
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	elsif user_exist?(friend_name) == true
 		if friend_exist?(username, friend_name) == false
 			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
 			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
 			db.exec("CREATE TABLE #{table_name_send} (
 			send	text,
-<<<<<<< HEAD
 		 receive     text 
 			)")
 			db.exec("CREATE TABLE #{table_name_receive} (
@@ -196,37 +149,8 @@ post '/addfriend' do
     else		
     	session[:message_add] = 'User does not exist.'
 	end
-=======
-		    receive     text
-			)")
-			db.exec("CREATE TABLE #{table_name_receive} (
-			send	text,
-		    receive     text
-			)")
-		elsif friend_exist?(username, friend_name) == true
-   			session[:message_add] = 'This user is already your friend.'
-   		end
-   	else
-   		session[:message_add] = 'User does not exist.'
-
-   	end
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	session[:username] = username
 	redirect '/message_home'
-
-end
-
-post '/send' do
-	message = params[:message]
-	username = session[:username].to_s
-	friend = session[:sendfriend].to_s	
-	from_table = "msg" + "_" + username + "_" + friend
-	to_table = "msg" + "_" + friend + "_" + username
-
-	dbname=db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{message}', ' ')");
-	dbname=db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{message}', ' ')");
-
-	redirect '/send_message'
 end
 
 post '/send' do
@@ -252,36 +176,21 @@ get '/send_message' do
 		friends_table = username + "_" + "friends"
 		friends=db.exec("SELECT following, followers FROM #{friends_table}");
 		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
-<<<<<<< HEAD
 		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
 
-post '/send_message' do
-	session[:sendfriend] = nil
-	session[:sendfriend] = params[:friend]
-	if session[:sendfriend.to_s.length > 0 && user_exist?(session[:sendfriend])]
-=======
-
-		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
-end
- 
 post '/send_message' do
 	session[:sendfriend] = nil
 	session[:sendfriend] = params[:friend]
 	if session[:sendfriend].to_s.length > 0 && user_exist?(session[:sendfriend])
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 		redirect '/send_message'
 	else
 		redirect '/message_home'
 	end
 end
 
-<<<<<<< HEAD
 get '/settings' do 
-=======
-get '/settings' do
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
-	friends_table = session[:username].to_s + "_" + "friends"
+	friends_table = session[:username] + "_" + "friends"
 	friends=db.exec("SELECT following, followers FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")

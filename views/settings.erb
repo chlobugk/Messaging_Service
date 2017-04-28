@@ -1,18 +1,23 @@
-<<<<<<< HEAD
-=======
 <div style="background-color: #66C3AD"><br>
 <div class="layout">
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 <form action="message_home" action="post">
 <input type='submit' value='Go Back'>
 </form>
-<center class="layout settings">
-<<<<<<< HEAD
-<u><%=username%>'s Account Settings<br><br></u>
 
-=======
+<center>
+Manage Friends List<br><br>
+
+<form action="/deletefriend" method="post">
+	<input type="hidden" name="username" value=<%=username%>>
+	<input type="text" name="friend_name" placeholder="Delete Friend">
+	<input type='submit'><p class='credentials'><%=message1%></p>
+</form>
+</p>
+<br>
+</center>
+
+<center class="layout settings">
 <%=username%>'s account settings<br><br>
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
@@ -30,31 +35,11 @@
 	</tbody>
 </table>
 </center>
-<<<<<<< HEAD
-
-<u>Manage Friends List<br><br></u>
-
-<form action="/deletefriend" method="post">
-	<input type="hidden" name="username" value=<%=username%>>
-	<input type="text" name="friend_name" placeholder="Delete Friend">
-	<input type='submit'><p class='credentials'><%=message1%></p>
-</form>
-</p>
-<br>
-
 </div>
-<center>
-<form class="delete_button" action='delete' method='post'>
-<input type="submit" value='Delete Account'>
-</center>
-</form>
-<br>
-=======
-</div>
+
 <center>
 <form  class="delete_button" action='delete' method='post'>
 <input type="submit" value='Delete Account'>
 </center>
 </form>
 <br></div>
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a

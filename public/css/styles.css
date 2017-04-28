@@ -3,11 +3,7 @@
 }
 
 .account{
-<<<<<<< HEAD
-  margin-top: -5%;
-=======
   margin-top: -13%;
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
   text-align: right;
   font-family: Helvetica;
   font-size: 20px;
@@ -15,14 +11,10 @@
 }
 
 .delete_button{
-<<<<<<< HEAD
-margin-top: 15%;
-=======
-margin-top: 12%;
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
-font-size: 20px;
-font-family: Helvetica;
-color:red;
+  margin-top: 12%;
+  font-size: 20px;
+  font-family: Helvetica;
+  color:red;
 }
 
 .settings{
@@ -40,39 +32,21 @@ color:red;
 }
 
 .msg{
-<<<<<<< HEAD
-width:40em;
-border: none;
-overflow:auto;
-}
-
-.sent{
-  background-color: blue;
-=======
   border: none;
   overflow:auto;
 }
 
 .sent{
   background-color:  #68679F;
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
   color: white;
 }
 
 .received{
-<<<<<<< HEAD
-  background-color: #1a1a1a;
-  color: white;
-}
-
-.message{
-=======
   background-color: #66C3AD;
   color: white;
 }
 
-.message{ 
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
+.message{
   position: relative;
   padding: 15px;
   margin: 1em 0 3em;
@@ -101,14 +75,8 @@ overflow:auto;
     display: table;
 }
 
-<<<<<<< HEAD
-@media screen and (max-width: 300px) {
-    .button {
-=======
-
 @media screen and (max-width: 300px) {
     .button { 
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
         width: 100%;
     }
 }
@@ -142,24 +110,12 @@ button {
    color: #ccc;
    cursor: pointer;
    }
-<<<<<<< HEAD
-=======
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 
 .button:active {
    border-top-color: #1b435e;
    background: #1b435e;
 }
 
-<<<<<<< HEAD
-=======
-.button:active {
-   border-top-color: #1b435e;
-   background: #1b435e;
-   }
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 img {
   width: 20%;
   position: top left;
@@ -170,26 +126,11 @@ header {
   font-size: 40px;
   color: #03255b;
   border-style: none;
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
-  /*border-width: 5px;
-  border-top-color: white;
-  border-left-color: white;
-  border-right-color: white;
-  border-bottom-color: #03255b;*/
-<<<<<<< HEAD
-=======
-
 /*  border-width: 5px;*/
  /* border-top-color: white;
   border-left-color: white;
   border-right-color: white;*/
  /* border-bottom-color: #03255b;*/
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 }
 
 hr {
@@ -206,16 +147,11 @@ hr {
 }
 
 .font {
-<<<<<<< HEAD
-=======
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
 	font-family: Helvetica;
 	font-size: 30px;
 	color: #03255b;
 }
 
-<<<<<<< HEAD
 .table {
   display: table-cell;
   color: white;
@@ -226,7 +162,7 @@ hr {
   border-width:4px;
   font-family: Helvetica;
 }
-=======
+
 .fontuser {
 
   font-family: Helvetica;
@@ -244,6 +180,3 @@ hr {
   border-width:4px;
   font-family: Helvetica;
 }
-
-
->>>>>>> 00ddded77bd43b9a2e505791370f4216c8b1164a
