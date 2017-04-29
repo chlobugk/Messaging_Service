@@ -8,10 +8,10 @@
 <center class="layout settings">
 Manage Friends List<br><br>
 
-<form action="/deletefriend" method="post">
+<form class="delete_friend_button" action="/deletefriend" method="post">
 	<input type="hidden" name="username" value=<%=username%>>
-	<input type="text" name="friend_name" placeholder="Delete Friend">
-	<input type='submit'><p class='credentials'><%=message1%></p>
+	<input type="text" name="friend_name" placeholder="Enter Name Here...">
+	<input type='submit' value="Delete Friend"><p class='credentials'><%=message1%></p>
 </form>
 </p>
 <br>
@@ -39,8 +39,8 @@ Manage Friends List<br><br>
 </div>
 
 <!-- <center class="layout settings"><br>
-Miscellaneous -->
-</center>
+Miscellaneous
+</center> -->
 
 <center>
 <form  class="delete_button" action='delete' method='post'>

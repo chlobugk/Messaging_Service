@@ -206,3 +206,7 @@ post '/delete' do
 db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
 	redirect '/'
 end
+
+post '/deletefriend' do
+	"Hello World"
+end
