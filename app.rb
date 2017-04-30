@@ -125,24 +125,24 @@ post '/addfriend' do
 	friend_name = params[:friend_name].to_s
 	username = params[:username].to_s
 	table_name_send = "msg" + "_" + username + "_" + friend_name
-	table_name_recieve = "msg" + "_" + friend_name + "_" + username
+	table_name_receive = "msg" + "_" + friend_name + "_" + username
 	following_table = username + "_" + "friends"
 	follower_table = friend_name + "_" + "friends"
 	if followers?(username, friend_name) == true && friend_exist?(username, friend_name) == false
 		db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
 	
 	elsif user_exist?(friend_name) == true
-		if friend_exist?(username, friend_name) == false
-			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
-			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
-			db.exec("CREATE TABLE #{table_name_send} (
-			send	text,
-		 receive     text 
-			)")
-			db.exec("CREATE TABLE #{table_name_receive} (
-			send	text,
-		 receive    text
-			)")
+ 		if friend_exist?(username, friend_name) == false
+ 			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
+ 			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
+ 			db.exec("CREATE TABLE #{table_name_send} (
+ 			send	text,
+ 		 receive    text
+ 			)")
+ 			db.exec("CREATE TABLE #{table_name_receive} (
+ 			send	text,
+ 		 receive	text
+ 			)")
 	elsif friend_exist?(username, friend_name) == true
     	session[:message_add] = 'This user is already your friend.'
     end
