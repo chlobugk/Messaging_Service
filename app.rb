@@ -94,8 +94,7 @@ post '/created' do
 			db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 			table_name = username + "_" + "friends"
 			db.exec("CREATE TABLE #{table_name} (
-					following text,
-				followers   text
+					friends text,
 					)")
 			session[:username] = username
 			session[:message_add] = nil
@@ -112,10 +111,9 @@ end
 get '/message_home' do
 	username = session[:username].to_s
 	friends_table = username.to_s + "_" + "friends"
-	friends=db.exec("SELECT following, followers FROM #{friends_table}");
+	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
-	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
-	erb :message, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
+	erb :message, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
 
 end
 
@@ -128,13 +126,11 @@ post '/addfriend' do
 	table_name_receive = "msg" + "_" + friend_name + "_" + username
 	following_table = username + "_" + "friends"
 	follower_table = friend_name + "_" + "friends"
-	if followers?(username, friend_name) == true && friend_exist?(username, friend_name) == false
-		db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
 	
-	elsif user_exist?(friend_name) == true
+	if user_exist?(friend_name) == true
  		if friend_exist?(username, friend_name) == false
- 			db.exec("INSERT INTO #{following_table}(following) VALUES('#{friend_name}')")
- 			db.exec("INSERT INTO #{follower_table}(followers) VALUES('#{username}')")
+ 			db.exec("INSERT INTO #{following_table}(friends) VALUES('#{friend_name}')")
+ 			db.exec("INSERT INTO #{follower_table}(friends) VALUES('#{username}')")
  			db.exec("CREATE TABLE #{table_name_send} (
  			send	text,
  		 receive    text
@@ -143,9 +139,9 @@ post '/addfriend' do
  			send	text,
  		 receive	text
  			)")
-	elsif friend_exist?(username, friend_name) == true
-    	session[:message_add] = 'This user is already your friend.'
-    end
+		else friend_exist?(username, friend_name) == true
+    		session[:message_add] = 'This user is already your friend.'
+   		end
     else		
     	session[:message_add] = 'User does not exist.'
 	end
@@ -174,7 +170,7 @@ get '/send_message' do
 		to_table = "msg" + "_" + friend + "_" + username
 
 		friends_table = username + "_" + "friends"
-		friends=db.exec("SELECT following, followers FROM #{friends_table}");
+		friends=db.exec("SELECT friends FROM #{friends_table}");
 		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
 		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
@@ -191,10 +187,9 @@ end
 
 get '/settings' do 
 	friends_table = session[:username] + "_" + "friends"
-	friends=db.exec("SELECT following, followers FROM #{friends_table}");
+	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
-	messages=db.exec("SELECT user_name, friend, message, date_time FROM messages")
-	erb :settings, locals: {username: session[:username], messages: messages, accounts: accounts, message1: session[:message_add], friends: friends}
+	erb :settings, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
 end
 
 post '/settings' do
