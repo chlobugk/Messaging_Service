@@ -8,10 +8,17 @@
 <center class="layout settings">
 Manage Friends List<br><br>
 
-<form class="delete_friend_button" action="/deletefriend" method="post">
+<form action="/deletefriendinput" method="post">
+	<p class="delete_friend_button_input">
 	<input type="text" name="friend_name" placeholder="Enter Name Here..."><br><br>
+</form>
+
+<form action="/deletefriend" method="post">
+	<p class="delete_friend_button">
+	<!-- <input type="text" name="friend_name" placeholder="Enter Name Here..."><br><br> -->
 	<input type='submit' value="Delete Friend"><%=message1%></p>
 </form>
+
 <br>
 </center>
 
@@ -20,15 +27,13 @@ Manage Friends List<br><br>
 <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
-			<th>Following</th>
-			<th>Followers</th>
+			<th>Friends</th>
 		</tr>
 	</thread>
 	<tbody>
 		<%friends.each do |friend|%>
 		<tr>
-			<td><%=friend["following"]%></td>
-			<td><%=friend["followers"]%></td>
+			<td><%=friend["friends"]%></td>
 		</tr>
 		<%end%>
 	</tbody>

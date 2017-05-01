@@ -23,6 +23,12 @@
   color:red;
 }
 
+.delete_friend_button_input{
+  font-size: 20px;
+  font-family: Helvetica;
+  color:black;
+}
+
 .settings{
   font-family: Helvetica;
   font-size: 20px;

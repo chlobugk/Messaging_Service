@@ -97,10 +97,10 @@ def friend_exist?(username, friend)
 	db = PG::Connection.new(db_params)
 
 	friends_table = username + "_" + "friends"
-	dbname=db.exec("SELECT following FROM #{friends_table}")
+	dbname=db.exec("SELECT friends FROM #{friends_table}")
 	results = false
 	dbname.each do |item|
-		if item['following'] == friend
+		if item['friends'] == friend
 			results = true
 		end
 	end
@@ -144,26 +144,4 @@ def send_message(username, friend)
 	dbname=db.exec("INSERT INTO #{from_table}(send) VALUES('#{params[:message]}')");
 	dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{params[:message]}')");
 
-end
-
-def followers?(username, friend)
-	db_params = {
-    host: ENV['host'],
-    port: ENV['port'],
-    dbname: ENV['db_name'],
-    user: ENV['user'],
-    password: ENV['password']
-	}
-
-	db = PG::Connection.new(db_params)
-
-	table = username + "_" + "friends"
-	dbname=db.exec("SELECT following, followers FROM #{table}") 
-	results = false
-		dbname.each do |item|
-		if item['followers'] == friend
-			results = true
-		end
-	end
-	results
 end
