@@ -164,9 +164,9 @@ end
 
 get '/send_message' do
 	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
-		username = session[:username].to_s
-		friend = session[:sendfriend].to_s
-		from_table = "msg" + "_" + username + "_" + friend
+			username = session[:username].to_s
+			friend = session[:sendfriend].to_s
+			from_table = "msg" + "_" + username + "_" + friend
 		to_table = "msg" + "_" + friend + "_" + username
 
 		friends_table = username + "_" + "friends"
