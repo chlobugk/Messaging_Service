@@ -164,9 +164,9 @@ end
 
 get '/send_message' do
 	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
-			username = session[:username].to_s
-			friend = session[:sendfriend].to_s
-			from_table = "msg" + "_" + username + "_" + friend
+				username = session[:username].to_s
+				friend = session[:sendfriend].to_s
+				from_table = "msg" + "_" + username + "_" + friend
 		to_table = "msg" + "_" + friend + "_" + username
 
 		friends_table = username + "_" + "friends"
@@ -201,6 +201,38 @@ post '/delete' do
 db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
 	redirect '/'
 end
+
+# post '/deletefriend' do
+	
+# 	session[:message_add] = nil
+# 	friend_name = params[:friend_name].to_s
+# 	username = params[:username].to_s
+# 	table_name_send = "msg" + "_" + username + "_" + friend_name
+# 	table_name_receive = "msg" + "_" + friend_name + "_" + username
+# 	following_table = username + "_" + "friends"
+# 	follower_table = friend_name + "_" + "friends"
+	
+# 	if user_exist?(friend_name) == true
+#  		if friend_exist?(username, friend_name) == true
+#  			db.exec("DELETE FROM #{friends_table}(friends) VALUES('#{friend_name}')")
+#  			db.exec("DELETE FROM #{friends_table}(friends) VALUES('#{username}')")
+#  			db.exec("DELETE TABLE #{table_name_send} (
+#  			send	text,
+#  		 receive    text
+#  			)")
+#  			db.exec("DELETE TABLE #{table_name_receive} (
+#  			send	text,
+#  		 receive	text
+#  			)")
+# 		else friend_exist?(username, friend_name) == false
+#     		session[:message_add] = 'This user is not on your friends list.'
+#    		end
+#     else		
+#     	session[:message_add] = 'The user has been successfully removed from your friends list.'
+# 	end
+# 	session[:username] = username
+# 	redirect '/settings'
+# end
 
 post '/deletefriend' do
 	"Hello World"
