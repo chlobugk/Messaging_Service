@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'pg'
 require 'bcrypt'
+require 'javascript'
 require_relative 'functions.rb'
 require_relative 'controller.rb'
 load './local_env.rb' if File.exists?('./local_env.rb')
