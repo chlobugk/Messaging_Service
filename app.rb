@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'pg'
 require 'bcrypt'
-require 'javascript'
 require_relative 'functions.rb'
 require_relative 'controller.rb'
 load './local_env.rb' if File.exists?('./local_env.rb')
@@ -208,8 +207,9 @@ db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
 end
 
 post '/delete_friend' do
+	trash = params[:trash]
 	table = session[:username] + "_" + "friends"
-db.exec("DELETE FROM #{table} WHERE username = '#{trash}'")
+db.exec("DELETE FROM #{table} WHERE friends = '#{trash}'")
 	redirect '/settings'
 end
 
