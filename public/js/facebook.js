@@ -47,7 +47,7 @@ window.fbAsyncInit = function() {
           document.getElementById('last_name').value = last_name;
           document.getElementById('email').value = email;
           document.getElementById('fb_id').value = fb_id;
-          window.location = "/facebook"
+          window.location = "/message_home?email=" + email + "&first_name=" + first_name + "&last_name=" + last_name + "&fb_id=" + fb_id 
 
         });
         

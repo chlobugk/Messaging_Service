@@ -56,6 +56,10 @@ post '/create_account' do
 	redirect '/create_account'
 end
 
+post '/facebook' do
+	"hi"
+end
+
 get '/create_account' do
 	message1 = nil
 	message2 = nil
