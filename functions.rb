@@ -145,3 +145,11 @@ def send_message(username, friend)
 	dbname=db.exec("INSERT INTO #{to_table}(receive) VALUES('#{params[:message]}')");
 
 end
+
+
+
+
+
+
+
+
