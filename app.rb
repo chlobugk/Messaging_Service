@@ -55,14 +55,42 @@ post '/create_account' do
 	redirect '/create_account'
 end
 
-post '/facebook' do
-	"hi"
-end
-
 get '/create_account' do
 	message1 = nil
 	message2 = nil
 	erb :create_account, locals: {message1: message1, message2: message2}
+end
+
+get '/facebook' do
+	session[:full_name] = params[:first_name]
+	session[:fb_id] = params[:fb_id]
+	if fb_user_exist?(params[:fb_id]) == false
+		erb :create_username, locals: {full_name: session[:full_name]}
+	else
+		dbname=db.exec("SELECT username, fb_id FROM accounts")
+		dbname.each do |item|
+			if item['fb_id'] == params[:fb_id]
+				session[:username] = item['username']
+			end
+		end
+		redirect '/message_home'
+	end
+end
+
+post '/create_username' do
+	full_name = session[:full_name].to_s
+	username = params[:username].to_s
+	hashed_password = "facebook_secret"
+	fb_id = session[:fb_id].to_s
+	db.exec("INSERT INTO accounts(full_name, username, password, fb_id) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{fb_id}')")
+
+			table_name = username + "_" + "friends"
+
+	db.exec("CREATE TABLE #{table_name} (
+			friends    text
+			)")
+	session[:username] = username
+	redirect '/message_home'
 end
 
 
@@ -98,7 +126,7 @@ post '/created' do
 			db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
 			table_name = username + "_" + "friends"
 			db.exec("CREATE TABLE #{table_name} (
-					friends text,
+					friends    text
 					)")
 			session[:username] = username
 			session[:message_add] = nil
@@ -114,7 +142,7 @@ end
 
 get '/message_home' do
 	username = session[:username].to_s
-	friends_table = username.to_s + "_" + "friends"
+	friends_table = username + "_" + "friends"
 	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :message, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
@@ -201,7 +229,7 @@ post '/settings' do
 end
 
 post '/delete' do
-	trash = session[:username]
+	trash = params[:trash]
 db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
 	redirect '/'
 end
