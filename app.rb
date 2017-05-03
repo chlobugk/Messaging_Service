@@ -89,7 +89,7 @@ post '/create_username' do
 	db.exec("CREATE TABLE #{table_name} (
 			friends    text
 			)")
-	session[:username] = username
+	session[:username] = params[:username]
 	redirect '/message_home'
 end
 
