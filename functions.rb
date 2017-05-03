@@ -146,6 +146,28 @@ def send_message(username, friend)
 
 end
 
+def fb_user_exist?(id)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	dbname=db.exec("SELECT fb_id FROM accounts")
+	results = false
+	dbname.each do |item|
+		if item['fb_id'] == id
+			results = true
+		end
+	end
+	results
+end
+
+
 
 
 
