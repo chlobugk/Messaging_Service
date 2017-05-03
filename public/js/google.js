@@ -1,14 +1,14 @@
-function googleLogin(googleUser) {
- var profile = googleUser.getBasicProfile();
-	console.log("Connected to Google")
- console.log('Name: ' + profile.getGivenName());
- console.log('Last Name: ' + profile.getFamilyName());
- console.log('Email: ' + profile.getEmail());
-	var first_name = profile.getGivenName();
-	var last_name = profile.getFamilyName();
-	var email = profile.getEmail();
-	window.location = "/google?first_name=" + first_name +  '&last_name=' + last_name + '&email=' + email;	 
-}
+// function googleLogin(googleUser) {
+//  var profile = googleUser.getBasicProfile();
+// 	console.log("Connected to Google")
+//  console.log('Name: ' + profile.getGivenName());
+//  console.log('Last Name: ' + profile.getFamilyName());
+//  console.log('Email: ' + profile.getEmail());
+// 	var first_name = profile.getGivenName();
+// 	var last_name = profile.getFamilyName();
+// 	var email = profile.getEmail();
+// 	window.location = "/google?first_name=" + first_name +  '&last_name=' + last_name + '&email=' + email;	 
+// }
 
 function signOut() {
 	var auth2 = gapi.auth2.getAuthInstance();
@@ -17,11 +17,11 @@ function signOut() {
 	});
 }
 
-function onLoad() {
-	gapi.load('auth2', function() {
-		gapi.auth2.init();
-	});
-}
+// function onLoad() {
+// 	gapi.load('auth2', function() {
+// 		gapi.auth2.init();
+// 	});
+// }
 
 // New Login Script so we can customize the css and actual login button
   var googleUser = {};
