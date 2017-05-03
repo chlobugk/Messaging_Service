@@ -241,7 +241,16 @@ end
 post '/delete_friend' do
 	trash = params[:trash]
 	table = session[:username] + "_" + "friends"
-db.exec("DELETE FROM #{table} WHERE friends = '#{trash}'")
+	send_table = "msg" + "_" + session[:username].to_s + "_" + session[:friend_name].to_s
+	receive_table = "msg" + "_" + session[:friend_name].to_s + "_" + session[:username].to_s
+		db.exec("DELETE FROM #{table} WHERE friends = '#{trash}'")
+		db.exec("DROP TABLE '#{send_table}'");
+		db.exec("DROP TABLE '#{receive_table}'");
+		if friend_exist?(username, friend_name) == true
+    		session[:message_add] = 'This user has been removed from your friends list.'
+    	else		
+    		session[:message_add] = 'This user is not your friend.'
+		end
 	redirect '/settings'
 end
 
