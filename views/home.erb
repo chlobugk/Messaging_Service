@@ -6,53 +6,26 @@ Have an account?
 </form>
 <br><p>OR</p>
 
-<!-- Custom Google Button -->
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 
-<script type="text/javascript" src="https://apis.google.com/js/api:client.js"></script>
-<!-- End of Custom Google Button -->
  <!-- facebook info below -->
 
 <p>
-<form method='post' action='message_home'><p>
+</p>
 <meta charset="UTF-8">
-
 <img class="center" src="/images/facebooklogin_360.png" style="cursor:pointer;height:40px;width:138px" onclick="FBLogin()"/>
 <br>
-
 <a href="/" onclick="FB.logout();">Sign Out</a>
 
   <!-- end of facebook info -->
 
 
-</form>
-
 <br><p>OR</p>
 
-<form method='post' action='message_home'>
-	<script src="https://apis.google.com/js/platform.js" async defer></script>
-	<meta name="google-signin-client_id" content="182370847863-48of9fa5cjevk9fqrd5jta7vredjr16e.apps.googleusercontent.com">
-	<div class="g-signin2" data-onsuccess="onSignIn"></div>
-
-	<a href="#" onclick="signOut();">Sign Out</a>
- <script>	
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-//   function onSignIn(googleUser) {
-//   var profile = googleUser.getBasicProfile();
-//   console.log('ID: ' + profile.getId()); // 
-//   console.log('Name: ' + profile.getName());
-//   console.log('Image URL: ' + profile.getImageUrl());
-//   console.log('Email: ' + profile.getEmail());
-// }
-
-
-
-</script>
+<meta charset="UTF-8">
+<img src="/images/google_480.png" style="cursor:pointer;height:41px;width:141px;align:center" onclick="googleLogin()" id="customBtn" class="customGPlusSignIn"/>
+<br>
+<a href="#" onclick="signOut();">Sign Out</a>
+ 
 
 </form>
 <br><p>OR</p>

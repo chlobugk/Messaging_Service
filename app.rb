@@ -77,6 +77,10 @@ get '/facebook' do
 	end
 end
 
+get '/google' do
+	"hey"
+end
+
 post '/create_username' do
 	full_name = session[:full_name].to_s
 	username = params[:username].to_s
