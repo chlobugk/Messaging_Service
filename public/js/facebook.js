@@ -1,34 +1,32 @@
-window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '1426913824022029', // Set YOUR APP ID
-            channelUrl : '', // Channel File
-            status     : true, // check login status
-            cookie     : true, // enable cookies to allow the server to access the session
-            xfbml      : true  // parse XFBML
-        });
-        FB.Event.subscribe('auth.authResponseChange', function(response) 
-                                             {
-            if (response.status === 'connected') 
-            {
-                // document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
-                console.log("Connected to Facebook");
-                getUserInfo();
-                //SUCCESS
-            }    
-            else if (response.status === 'not_authorized') 
-            {
-                document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
-                //FAILED
-            } else 
-            {
-                document.getElementById("message").innerHTML +=  "<br>Logged Out";
-                //UNKNOWN ERROR
-            }
-        }); 
-    };
+ window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1426913824022029', // Set YOUR APP ID
+      channelUrl : '', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+    FB.Event.subscribe('auth.authResponseChange', function(response) 
+                       {
+      if (response.status === 'connected') 
+      {
+        // document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
+        console.log("Connected to Facebook");
+        getUserInfo();
 
-
-
+        //SUCCESS
+      }    
+      else if (response.status === 'not_authorized') 
+      {
+        document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
+        //FAILED
+      } else 
+      {
+        document.getElementById("message").innerHTML +=  "<br>Logged Out";
+        //UNKNOWN ERROR
+      }
+    }); 
+  };
   function FBLogin()
   {
     FB.login(function(response) {
@@ -42,12 +40,12 @@ window.fbAsyncInit = function() {
           var first_name = response.first_name;
           var last_name = response.last_name;
           var email = response.email;
-          var fb_id = response.id;
-          document.getElementById('first_name').value = first_name;
-          document.getElementById('last_name').value = last_name;
-          document.getElementById('email').value = email;
-          document.getElementById('fb_id').value = fb_id;
-          window.location = "/message_home?email=" + email + "&first_name=" + first_name + "&last_name=" + last_name + "&fb_id=" + fb_id 
+//          var fb_id = response.id;
+//          document.getElementById('first_name').value = first_name;
+//          document.getElementById('last_name').value = last_name;
+//          document.getElementById('email').value = email;
+//          document.getElementById('fb_id').value = fb_id;
+          window.location = "/message_home?email=" + email + "&first_name=" + first_name + "&last_name=" + last_name
 
         });
         
