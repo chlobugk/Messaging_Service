@@ -167,6 +167,53 @@ def fb_user_exist?(id)
 	results
 end
 
+def g_user_exist?(gmail)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	dbname=db.exec("SELECT gmail FROM accounts")
+	results = false
+	dbname.each do |item|
+		if item['gmail'] == gmail
+			results = true
+		end
+	end
+	results
+end
+
+
+def delete_account(username)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+	
+	friends_table = username + "_" + "friends"
+	dbname=db.exec("SELECT friends FROM #{friends_table}")
+	dbname.each do |item|
+		other_friend_tables = item['friends'] + "_" + "friends"
+		send_table = "msg" + "_" + username + "_" + item['friends'] 
+		receive_table = "msg" + "_" + item['friends'] + "_" + username
+		db.exec("DROP TABLE IF EXISTS #{send_table}");
+		db.exec("DROP TABLE IF EXISTS #{receive_table}");
+		db.exec("DELETE FROM #{other_friend_tables} WHERE friends = '#{username}' ")
+	end
+	db.exec("DROP TABLE IF EXISTS #{friends_table}");
+	db.exec("DELETE FROM accounts WHERE username = '#{username}' ")
+end
+
 
 
 

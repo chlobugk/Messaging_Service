@@ -61,10 +61,12 @@ get '/create_account' do
 end
 
 get '/facebook' do
+	message1 = ''
+	message2 = ''
 	session[:full_name] = params[:first_name]
 	session[:fb_id] = params[:fb_id]
 	if fb_user_exist?(params[:fb_id]) == false
-		erb :create_username, locals: {full_name: session[:full_name]}
+		erb :create_fb_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
 	else
 		dbname=db.exec("SELECT username, fb_id FROM accounts")
 		dbname.each do |item|
@@ -76,26 +78,76 @@ get '/facebook' do
 	end
 end
 
-get '/google' do
-	"hey"
-end
 
-post '/create_username' do
+post '/create_fb_username' do
 	full_name = session[:full_name].to_s
 	username = params[:username].to_s
 	hashed_password = "facebook_secret"
 	fb_id = session[:fb_id].to_s
-	db.exec("INSERT INTO accounts(full_name, username, password, fb_id) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{fb_id}')")
+	if username_not_unique?(username)
+		  redirect '/fb_username_not_unique'
+	else
+		db.exec("INSERT INTO accounts(full_name, username, password, fb_id) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{fb_id}')")
 
-			table_name = username + "_" + "friends"
+				table_name = username + "_" + "friends"
 
-	db.exec("CREATE TABLE #{table_name} (
-			friends    text
-			)")
-	session[:username] = params[:username]
-	redirect '/message_home'
+		db.exec("CREATE TABLE #{table_name} (
+				friends    text
+				)")
+		session[:username] = params[:username]
+		redirect '/message_home'
+	end
 end
 
+get '/fb_username_not_unique' do
+	message1 = 'The user name you selected has already been taken.'
+	message2 = 'Please choose a different user name.'
+	erb :create_fb_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
+end
+
+get '/google' do
+	message1 = ''
+	message2 = ''
+	session[:full_name]  = params[:first_name]
+	session[:gmail] = params[:email]
+	if g_user_exist?(params[:email]) == false
+		erb :create_g_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
+	else
+		dbname=db.exec("SELECT username, gmail FROM accounts")
+		dbname.each do |item|
+			if item['gmail'] == params[:email]
+				session[:username] = item['username']
+			end
+		end
+		redirect '/message_home'
+	end
+end
+
+post '/create_g_username' do
+	full_name = session[:full_name].to_s
+	username = params[:username].to_s
+	hashed_password = "google_secret"
+	gmail = session[:gmail].to_s
+	if username_not_unique?(username)
+		redirect '/g_username_not_unique'
+	else
+		db.exec("INSERT INTO accounts(full_name, username, password, gmail) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{gmail}')")
+
+				table_name = username + "_" + "friends"
+
+		db.exec("CREATE TABLE #{table_name} (
+				friends    text
+				)")
+		session[:username] = params[:username]
+		redirect '/message_home'
+	end
+end
+
+get '/g_username_not_unique' do
+	message1 = 'The user name you selected has already been taken.'
+	message2 = 'Please choose a different user name.'
+	erb :create_g_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
+end
 
 get '/invalid_credentials' do
 	message1 = 'One or more of your credentials was invalid.'
@@ -149,7 +201,6 @@ get '/message_home' do
 	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :message, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
-
 end
 
 post '/addfriend' do
@@ -168,11 +219,13 @@ post '/addfriend' do
  			db.exec("INSERT INTO #{follower_table}(friends) VALUES('#{username}')")
  			db.exec("CREATE TABLE #{table_name_send} (
  			send	text,
- 		 receive    text
+ 		 receive    text,
+ 		 timestamp    timestamp default localtimestamp
  			)")
  			db.exec("CREATE TABLE #{table_name_receive} (
  			send	text,
- 		 receive	text
+ 		 receive	text,
+ 		 timestamp    timestamp default localtimestamp
  			)")
 		else friend_exist?(username, friend_name) == true
     		session[:message_add] = 'This user is already your friend.'
@@ -233,8 +286,8 @@ post '/settings' do
 end
 
 post '/delete' do
-	trash = params[:trash]
-db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
+	trash = session[:username]
+	delete_account(trash)
 	redirect '/'
 end
 
