@@ -225,10 +225,11 @@ get '/settings' do
 	friends_table = session[:username] + "_" + "friends"
 	friends=db.exec("SELECT friends FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
-	erb :settings, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
+	erb :settings, locals: {username: session[:username], accounts: accounts, message1: session[:message_trash], friends: friends}
 end
 
 post '/settings' do
+	session[:message_trash] = ""
 	redirect '/settings'
 end
 
@@ -239,18 +240,23 @@ db.exec("DELETE FROM accounts WHERE username = '#{trash}' ");
 end
 
 post '/delete_friend' do
-	trash = params[:trash]
-	table = session[:username] + "_" + "friends"
-	send_table = "msg" + "_" + session[:username].to_s + "_" + session[:friend_name].to_s
-	receive_table = "msg" + "_" + session[:friend_name].to_s + "_" + session[:username].to_s
-		db.exec("DELETE FROM #{table} WHERE friends = '#{trash}'")
-		db.exec("DROP TABLE '#{send_table}'");
-		db.exec("DROP TABLE '#{receive_table}'");
-		if friend_exist?(username, friend_name) == true
-    		session[:message_add] = 'This user has been removed from your friends list.'
-    	else		
-    		session[:message_add] = 'This user is not your friend.'
-		end
+	username = session[:username].to_s
+	friend_name = session
+	trash = params[:trash_friend].to_s
+
+	if friend_exist?(username, trash) == true
+    		session[:message_trash] = 'This user has been removed from your friends list.'
+			user_table = username + "_" + "friends"
+			friend_table = trash + "_" + "friends"
+			send_table = "msg" + "_" + username + "_" + trash
+			receive_table = "msg" + "_" + trash + "_" + username
+				db.exec("DELETE FROM #{user_table} WHERE friends = '#{trash}'")
+				db.exec("DELETE FROM #{friend_table} WHERE friends = '#{username}'")
+				db.exec("DROP TABLE IF EXISTS #{send_table}");
+				db.exec("DROP TABLE IF EXISTS #{receive_table}");
+	else		
+    	session[:message_trash] = 'This user is not your friend.'
+	end
 	redirect '/settings'
 end
 

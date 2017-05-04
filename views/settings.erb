@@ -8,14 +8,13 @@
 <center class="layout settings">
 Manage Friends List<br><br>
 
-<form action="/delete_friend_input" method="post">
-	<p class="delete_friend_button_input">
-	<input type="text" name="friend_name" placeholder="Enter Name Here..."><br><br>
-</form>
-
 <form action="/delete_friend" method="post">
+
+	<p class="delete_friend_button_input">
+	<input type="text" name="trash_friend" placeholder="Enter Name Here..."><br>
+
 	<p class="delete_friend_button">
-	<input type='submit' value="Delete Friend"><%=message1%></p>
+	<input type='submit' value="Delete Friend"><br><%=message1%></p>
 </form>
 
 <br>

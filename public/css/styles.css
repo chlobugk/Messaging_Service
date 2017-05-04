@@ -36,7 +36,8 @@
 }
 
 .credentials{
-	color: crimson
+  font-family: Helvetica;
+	color: crimson;
 }
 
 .message_box{
