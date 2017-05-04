@@ -169,9 +169,7 @@ end
 
 <<<<<<< HEAD
 def g_user_exist?(gmail)
-=======
-def reset_password(password)
->>>>>>> 000b5269d3abf3949c97ecf490c80f637a6e8da0
+
 	db_params = {
     host: ENV['host'],
     port: ENV['port'],
@@ -179,7 +177,6 @@ def reset_password(password)
     user: ENV['user'],
     password: ENV['password']
 	}
-<<<<<<< HEAD
 
 	db = PG::Connection.new(db_params)
 	
@@ -219,8 +216,8 @@ def delete_account(username)
 	db.exec("DELETE FROM accounts WHERE username = '#{username}' ")
 end
 
-=======
->>>>>>> 000b5269d3abf3949c97ecf490c80f637a6e8da0
+
+def reset_password(password)
 
 	db = PG::Connection.new(db_params)
 
