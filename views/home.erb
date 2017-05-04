@@ -18,13 +18,30 @@ Have an account?
 
   <!-- end of facebook info -->
 
-
 <br><p>OR</p>
 
-<meta charset="UTF-8">
-<img src="/images/google_480.png" style="cursor:pointer;height:41px;width:141px;align:center" onclick="startApp()" id="customBtn" class="customGPlusSignIn"/>
-<br>
-<a href="#" onclick="signOut();">Sign Out</a>
+<!-- <meta charset="UTF-8"> -->
+<!-- <img src="/images/google.png" style="cursor:pointer;height:37px;width:120px;align:center;" id="customBtn" class="customGPlusSignIn"/>
+
+<br> -->
+<!-- Custom Google Button -->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="https://apis.google.com/js/platform.js"></script>
+
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+<!-- 	<a href="#" onclick="signOut();">Sign Out</a>
+ <script>	
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+  </script> -->
+<!-- End of Custom Google Button -->
+
  
 
 </form>
