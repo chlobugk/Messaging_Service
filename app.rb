@@ -260,9 +260,14 @@ post '/delete_friend' do
 	redirect '/settings'
 end
 
+post '/forgot_password' do
+	redirect '/forgot_password'
+end  
+
 get '/forgot_password' do
 	full_name = session[:full_name].to_s
 	username = session[:username].to_s
 	erb :forgot_password, locals: {full_name: session[:full_name], username: session[:username]}
-	redirect '/login'
 end
+
+
