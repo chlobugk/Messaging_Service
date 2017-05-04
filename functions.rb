@@ -167,7 +167,11 @@ def fb_user_exist?(id)
 	results
 end
 
+<<<<<<< HEAD
 def g_user_exist?(gmail)
+=======
+def reset_password(password)
+>>>>>>> 000b5269d3abf3949c97ecf490c80f637a6e8da0
 	db_params = {
     host: ENV['host'],
     port: ENV['port'],
@@ -175,6 +179,7 @@ def g_user_exist?(gmail)
     user: ENV['user'],
     password: ENV['password']
 	}
+<<<<<<< HEAD
 
 	db = PG::Connection.new(db_params)
 	
@@ -214,11 +219,14 @@ def delete_account(username)
 	db.exec("DELETE FROM accounts WHERE username = '#{username}' ")
 end
 
+=======
+>>>>>>> 000b5269d3abf3949c97ecf490c80f637a6e8da0
 
+	db = PG::Connection.new(db_params)
 
+	full_name = session[:full_name]
+	username = session[:username]
+	new_password = session[:new_password]
+	dbname=db.exec("SELECT password FROM accounts")
 
-
-
-
-
-
+end
