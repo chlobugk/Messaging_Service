@@ -314,15 +314,28 @@ end
 
 post '/forgot_password' do
 	redirect '/forgot_password'
-end  
+end
 
 get '/forgot_password' do
-	full_name = session[:full_name].to_s
-	username = session[:username].to_s
-	new_data = session[:new_password].to_s
-	old_data = session[:old_password].to_s
-	db.exec("UPDATE accounts SET password = '{new_data}' WHERE password ='{old_data}'")
-	new_password = BCrypt::Password.create("#{session[:password]}")
-	erb :forgot_password, locals: {full_name: session[:full_name], username: session[:username]}
-
+	erb :forgot_password, locals: {message1: session[:message1], message2: session[:message2], full_name: session[:full_name], username: session[:username]}
 end
+
+post '/new_password' do
+	session[:message1] = ''
+	session[:message2] = ''
+	username = params[:username].to_s
+	new_data = params[:new_password].to_s
+	new_data2 = params[:new_password2].to_s
+
+	if new_data != new_data2
+		session[:message1] = 'Your passwords do not match'
+		session[:message2] = 'Please try again'
+		redirect '/forgot_password'
+	else
+		new_hashed_password = BCrypt::Password.create("#{new_data}")
+		db.exec("UPDATE accounts SET password = '{new_hashed_password}' WHERE username ='{username}'")
+		redirect '/login'
+	end
+end
+
+
