@@ -167,7 +167,6 @@ def fb_user_exist?(id)
 	results
 end
 
-<<<<<<< HEAD
 def g_user_exist?(gmail)
 
 	db_params = {
