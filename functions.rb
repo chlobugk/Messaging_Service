@@ -167,11 +167,20 @@ def fb_user_exist?(id)
 	results
 end
 
+def reset_password(password)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
 
+	db = PG::Connection.new(db_params)
 
+	full_name = session[:full_name]
+	username = session[:username]
+	new_password = session[:new_password]
+	dbname=db.exec("SELECT password FROM accounts")
 
-
-
-
-
-
+end

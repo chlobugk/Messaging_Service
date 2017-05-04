@@ -267,7 +267,9 @@ end
 get '/forgot_password' do
 	full_name = session[:full_name].to_s
 	username = session[:username].to_s
+	new_data = new_password
+	old_data = old_password
+	db.exec("UPDATE accounts SET password = '{new_data}' WHERE password ='{old_data}'")
 	erb :forgot_password, locals: {full_name: session[:full_name], username: session[:username]}
+
 end
-
-
