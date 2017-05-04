@@ -266,9 +266,10 @@ end
 get '/forgot_password' do
 	full_name = session[:full_name].to_s
 	username = session[:username].to_s
-	new_data = new_password
-	old_data = old_password
+	new_data = session[:new_password]
+	old_data = session[:old_password]
 	db.exec("UPDATE accounts SET password = '{new_data}' WHERE password ='{old_data}'")
+	new_password = BCrypt::Password.create("#{session[:password]}")
 	erb :forgot_password, locals: {full_name: session[:full_name], username: session[:username]}
 
 end
