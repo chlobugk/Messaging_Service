@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'pg'
 require 'bcrypt'
+require 'pony'
 require_relative 'functions.rb'
 load './local_env.rb' if File.exists?('./local_env.rb')
 db_params = {
@@ -166,11 +167,13 @@ post '/created' do
 		username = params[:username]
 		password = params[:password]
 		password2 = params[:password2]
+		email = params[:email]
+		email2 = params[:email2]
 
 		if valid_credentials?(full_name, username, password) == false
 			redirect '/invalid_credentials'
-		elsif password != password2
-			message1 = 'Your passwords do not match'
+		elsif password != password2 || email != email2
+			message1 = 'Your passwords or emails do not match'
 			message2 = 'Please try again'
 			erb :create_account, locals: {message1: message1, message2: message2}
 		elsif username_not_unique?(username)
@@ -178,7 +181,7 @@ post '/created' do
 		else
 			hashed_password = BCrypt::Password.create("#{password}")
 
-			db.exec("INSERT INTO accounts(full_name, username, password) VALUES('#{full_name}', '#{username}', '#{hashed_password}')")
+			db.exec("INSERT INTO accounts(full_name, username, password, email) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{email}')")
 			table_name = username + "_" + "friends"
 			db.exec("CREATE TABLE #{table_name} (
 					friends    text
@@ -312,12 +315,12 @@ post '/delete_friend' do
 	redirect '/settings'
 end
 
-post '/forgot_password' do
-	redirect '/forgot_password'
+get '/forgot_password' do
+	erb :forgot_password, locals: {message1: ''}
 end
 
-get '/forgot_password' do
-	erb :forgot_password, locals: {message1: session[:message1], message2: session[:message2], full_name: session[:full_name], username: session[:username]}
+get '/reset_password' do
+	erb :reset_password, locals: {message1: session[:message1], message2: session[:message2], full_name: session[:full_name], username: session[:username]}
 end
 
 post '/new_password' do
@@ -336,6 +339,43 @@ post '/new_password' do
 		db.exec("UPDATE accounts SET password = '{new_hashed_password}' WHERE username ='{username}'")
 		redirect '/login'
 	end
+end
+
+post '/send_reset_email' do
+	username = params[:username]
+	email = params[:email]
+	message1 = ''
+	#This selection line works, unless you put in an invalid username.
+	accounts = db.exec("SELECT username, email FROM accounts WHERE username = '#{username}'")
+	
+	# Need the link in the body section here to work
+	# Should link to the route tom/chloe worked on to reset password.
+	Pony.options = {
+	  :subject => "Reset Your Password",
+	  :body => "<a href='www.localhost:4567/reset_password'>Click this link to reset your password</a>",
+	  :via => :smtp,
+	  :via_options => {
+	    :address              => 'smtp.gmail.com',
+	    :port                 => '587',
+	    :enable_starttls_auto => true,
+	    :user_name            => ENV["SMTP_NAME"],
+	    :password             => ENV["SMTP_PASSWORD"],
+	    :authentication       => :login, # :cram_md5, no auth by default
+	    :domain               => "localhost.localdomain"
+	  }
+	 }
+
+	if username == accounts[0]['username'] && email == accounts[0]['email']
+
+		message1 = 'A link to reset your password has been emailed to you'
+		Pony.mail(:to => "#{accounts[0]['email']}", :headers => { 'Content-Type' => 'text/html' })
+		erb :forgot_password, locals: {message1: message1}
+	else
+
+		message1 = 'Invalid username or email address'
+		erb :forgot_password, locals: {message1: message1}
+	end
+
 end
 
 
