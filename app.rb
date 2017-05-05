@@ -16,6 +16,7 @@ enable :sessions
 db = PG::Connection.new(db_params)
 
 get '/' do
+	session[:message_add] = nil
 	session[:username] = nil
 	session[:sendfriend] = nil
 	accounts=db.exec("SELECT full_name, username FROM accounts");
@@ -262,7 +263,7 @@ get '/send_message' do
 
 		friends_table = username + "_" + "friends"
 		friends=db.exec("SELECT friends FROM #{friends_table}");
-		msg_table=db.exec("SELECT send, receive FROM #{from_table}");
+		msg_table=db.exec("SELECT send, receive, timestamp FROM #{from_table}");
 		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
 end
 
