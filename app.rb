@@ -352,7 +352,7 @@ post '/send_reset_email' do
 	# Should link to the route tom/chloe worked on to reset password.
 	Pony.options = {
 	  :subject => "Reset Your Password",
-	  :body => "<a href='https://messaging-service-mm.herokuapp.com/reset_password'>Click this link to reset your password</a>",
+	  :body => "<a href='www.localhost:4567/reset_password'>Click this link to reset your password</a>",
 	  :via => :smtp,
 	  :via_options => {
 	    :address              => 'smtp.gmail.com',
