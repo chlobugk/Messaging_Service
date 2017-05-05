@@ -224,12 +224,12 @@ post '/addfriend' do
  			db.exec("CREATE TABLE #{table_name_send} (
  			send	text,
  		 receive    text,
- 		 timestamp    timestamp default timestamp
+ 		 timestamp    timestamp default localtimestamp
  			)")
  			db.exec("CREATE TABLE #{table_name_receive} (
  			send	text,
  		 receive	text,
- 		 timestamp    timestamp default timestamp
+ 		 timestamp    timestamp default localtimestamp
  			)")
 		else friend_exist?(username, friend_name) == true
     		session[:message_add] = 'This user is already your friend.'
