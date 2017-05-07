@@ -195,7 +195,7 @@ end
 
 post '/message_home' do
 	session[:username] = params[:username]
-	username = params[:username]
+	username = params[:username].to_s
 	redirect '/message_home?username=' + username
 end
 
@@ -244,37 +244,40 @@ end
 post '/send' do
 	message = params[:message]
 	username = session[:username].to_s
-	friend = session[:sendfriend].to_s
+	friend = session[:sendfriend].to_s.gsub(/\s+/, '')
 	from_table = "msg" + "_" + username + "_" + friend
 	to_table = "msg" + "_" + friend + "_" + username
 
 	dbname=db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{message}', ' ')");
 	dbname=db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{message}', ' ')");
 
-	redirect '/send_message'
+	redirect '/send'
+end
+
+get '/send' do
+	username = session[:username].to_s
+	friend = session[:sendfriend].to_s.gsub(/\s+/, '')
+	friends_table = username + "_" + "friends"
+	friends=db.exec("SELECT friends FROM #{friends_table}");
+	table = "msg" + "_" + username + "_" + friend
+	msg_table=db.exec("SELECT send, receive, timestamp FROM #{table}");
+erb :send, locals: {friend: session[:sendfriend], msg_table: msg_table, username: session[:username], friends: friends}
 end
 
 get '/send_message' do
 	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
 				username = session[:username].to_s
-				friend = session[:sendfriend].to_s
-				from_table = "msg" + "_" + username + "_" + friend
-		to_table = "msg" + "_" + friend + "_" + username
-
+				friend = params[:friend].to_s.gsub(/\s+/, '')
+				session[:sendfriend] = friend
 		friends_table = username + "_" + "friends"
 		friends=db.exec("SELECT friends FROM #{friends_table}");
-		msg_table=db.exec("SELECT send, receive, timestamp FROM #{from_table}");
-		erb :send, locals: {msg_table: msg_table, username: session[:username], sendfriend: session[:sendfriend], friends: friends}
+		table = "msg" + "_" + username + "_" + friend
+		msg_table=db.exec("SELECT send, receive, timestamp FROM #{table}");
+		erb :send, locals: {friend: session[:sendfriend], msg_table: msg_table, username: session[:username], friends: friends}
 end
 
 post '/send_message' do
-	session[:sendfriend] = nil
-	session[:sendfriend] = params[:friend]
-	if session[:sendfriend].to_s.length > 0 && user_exist?(session[:sendfriend])
 		redirect '/send_message'
-	else
-		redirect '/message_home'
-	end
 end
 
 get '/settings' do 

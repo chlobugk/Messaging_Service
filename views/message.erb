@@ -3,30 +3,20 @@
 <form action="/" method="post">
 <input type="submit" value="Mined Minds Home Page">
 </form>
-
-<center><br><br>
-<form action='/send_message' method='post'>
-<p class="fontuser">Enter a user below.</p>
-<input type="text" name="friend" placeholder="Start Messaging With...">
-<input type="submit" value="Go">
-</center>
-</form>
-<br>
-
+<br><br>
 <div class="account">Welcome <%=username%><br>
 <form action='settings' method='post'>
 <input type="submit" value="Account Settings"></div>
 </form><br>
 
-<p style="margin-top:-3%">
+<p style="margin-top:-2%">
 <form action="/addfriend" method="post">
 	<input type="hidden" name="username" value=<%=username%>>
 	<input type="text" name="friend_name" placeholder="Add Friend">
 	<input type='submit'><p class='credentials'><%=message1%></p>
-</form><br>
-</p>
+</form>
+</p><br>
 
- 
  <table style="margin-right:0px;margin-left:auto;" class='table' border='1'>
 	<thread>
 		<tr>
@@ -36,8 +26,8 @@
 	<tbody>
 		<%friends.each do |friend|%>
 		<tr>
-			<td><%=friend["friends"]%></td>
+			<td><a href="/send_message?friend= + <%=friend["friends"]%>" style="color:white"><%=friend["friends"]%></a></td>
 		</tr>
 		<%end%>
 	</tbody>
-</table></div><br><br></div>
+</table><br><br><br><br></div></div>
