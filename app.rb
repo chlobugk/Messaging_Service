@@ -264,11 +264,12 @@ get '/send' do
 erb :send, locals: {friend: session[:sendfriend], msg_table: msg_table, username: session[:username], friends: friends}
 end
 
+#This route is different from '/send' because friend=params[:friend]
 get '/send_message' do
-	# pg.exec("IF EXISTS (SELECT * FROM pg_table WHERE tablename=table_name_send)
-				username = session[:username].to_s
-				friend = params[:friend].to_s.gsub(/\s+/, '')
-				session[:sendfriend] = friend
+		username = session[:username].to_s
+		friend = params[:friend].to_s.gsub(/\s+/, '')
+			
+		session[:sendfriend] = friend
 		friends_table = username + "_" + "friends"
 		friends=db.exec("SELECT friends FROM #{friends_table}");
 		table = "msg" + "_" + username + "_" + friend

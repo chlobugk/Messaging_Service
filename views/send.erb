@@ -21,7 +21,7 @@
 				<tbody>
 					<%friends.each do |friend|%>
 					<tr>
-						<td><%=friend["friends"]%></td>
+						<td><a href="/send_message?friend= + <%=friend["friends"]%>" style="color:white"><%=friend["friends"]%></a></td>
 					</tr>
 					<%end%>
 				</tbody>
