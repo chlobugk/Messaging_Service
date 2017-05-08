@@ -226,3 +226,34 @@ def reset_password(password)
 	dbname=db.exec("SELECT password FROM accounts")
 
 end
+
+
+def unread_message?(username)
+	db_params = {
+    host: ENV['host'],
+    port: ENV['port'],
+    dbname: ENV['db_name'],
+    user: ENV['user'],
+    password: ENV['password']
+	}
+
+	db = PG::Connection.new(db_params)
+
+	friends_table = username + "_" + "friends"
+	dbname=db.exec("SELECT friends, message FROM #{friends_table}")
+	results = false
+	dbname.each do |item|
+		if item['message'] == 'unread'
+			results = true
+		end
+	end
+	results
+end
+
+
+
+
+
+
+
+

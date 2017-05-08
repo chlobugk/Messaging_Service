@@ -35,7 +35,16 @@
 	<tbody>
 		<%friends.each do |friend|%>
 		<tr>
-			<td><a href="/send_message?friend= + <%=friend["friends"]%>" style="color:white"><%=friend["friends"]%></a></td>
+			<td>
+				<a href="/send_message?friend= + <%=friend["friends"]%>">
+
+				<% if friend["message"] == 'unread'	%>
+					<div style="color:darkturquoise;font-weight:bold"><%=friend["friends"]%></div>
+				<% else %>
+					<div style="color:white"><%=friend["friends"]%></div>
+				<% end %>
+				</a>
+			</td>
 		</tr>
 		<%end%>
 	</tbody>

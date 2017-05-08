@@ -24,6 +24,7 @@ get '/' do
 end
 
 post '/' do
+	session[:message_add] = nil
 	session[:username] = nil 
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :home
@@ -94,7 +95,8 @@ post '/create_fb_username' do
 				table_name = username + "_" + "friends"
 
 		db.exec("CREATE TABLE #{table_name} (
-				friends    text
+				friends    text, 
+				message    text
 				)")
 		session[:username] = params[:username]
 		redirect '/message_home'
@@ -138,7 +140,8 @@ post '/create_g_username' do
 				table_name = username + "_" + "friends"
 
 		db.exec("CREATE TABLE #{table_name} (
-				friends    text
+				friends    text, 
+				message    text
 				)")
 		session[:username] = params[:username]
 		redirect '/message_home'
@@ -185,7 +188,8 @@ post '/created' do
 			db.exec("INSERT INTO accounts(full_name, username, password, email) VALUES('#{full_name}', '#{username}', '#{hashed_password}', '#{email}')")
 			table_name = username + "_" + "friends"
 			db.exec("CREATE TABLE #{table_name} (
-					friends    text
+					friends    text,
+					message    text
 					)")
 			session[:username] = username
 			session[:message_add] = nil
@@ -202,7 +206,7 @@ end
 get '/message_home' do
 	username = session[:username].to_s
 	friends_table = username + "_" + "friends"
-	friends=db.exec("SELECT friends FROM #{friends_table}");
+	friends=db.exec("SELECT friends, message FROM #{friends_table}");
 	accounts=db.exec("SELECT full_name, username, password FROM accounts");
 	erb :message, locals: {username: session[:username], accounts: accounts, message1: session[:message_add], friends: friends}
 end
@@ -242,14 +246,15 @@ post '/addfriend' do
 end
 
 post '/send' do
-	message = params[:message]
+	msg = params[:message]
 	username = session[:username].to_s
 	friend = session[:sendfriend].to_s.gsub(/\s+/, '')
 	from_table = "msg" + "_" + username + "_" + friend
 	to_table = "msg" + "_" + friend + "_" + username
-
-	dbname=db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{message}', ' ')");
-	dbname=db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{message}', ' ')");
+	friend_table = friend + "_" + "friends"
+	db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{msg}', ' ')");
+	db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{msg}', ' ')");
+	db.exec("UPDATE #{friend_table} SET message = 'unread' WHERE friends ='#{username}'")
 
 	redirect '/send'
 end
@@ -266,19 +271,42 @@ end
 
 #This route is different from '/send' because friend=params[:friend]
 get '/send_message' do
+
 		username = session[:username].to_s
 		friend = params[:friend].to_s.gsub(/\s+/, '')
 			
 		session[:sendfriend] = friend
 		friends_table = username + "_" + "friends"
-		friends=db.exec("SELECT friends FROM #{friends_table}");
+		friends=db.exec("SELECT friends, message FROM #{friends_table}");
 		table = "msg" + "_" + username + "_" + friend
 		msg_table=db.exec("SELECT send, receive, timestamp FROM #{table}");
+
+		friends.each do |item|
+			if item["friends"] == friend && item["message"] == 'unread'
+				db.exec("UPDATE #{friends_table} SET message = '' WHERE friends ='#{friend}'")
+			end
+		end
+		friends=db.exec("SELECT friends, message FROM #{friends_table}");
 		erb :send, locals: {friend: session[:sendfriend], msg_table: msg_table, username: session[:username], friends: friends}
 end
 
 post '/send_message' do
-		redirect '/send_message'
+		username = session[:username].to_s
+		friend = params[:friend].to_s	
+
+		session[:sendfriend] = friend
+		friends_table = username + "_" + "friends"
+		friends=db.exec("SELECT friends FROM #{friends_table}");
+		table = "msg" + "_" + username + "_" + friend
+		msg_table=db.exec("SELECT send, receive, timestamp FROM #{table}");
+
+		friends.each do |item|
+			if item["friends"] == friend && item["message"] == 'unread'
+				db.exec("UPDATE #{friends_table} SET message = '' WHERE friends ='#{friend}'")
+			end
+		end
+		friends=db.exec("SELECT friends, message FROM #{friends_table}");
+		erb :send, locals: {friend: session[:sendfriend], msg_table: msg_table, username: session[:username], friends: friends}
 end
 
 get '/settings' do 
@@ -291,6 +319,14 @@ end
 post '/settings' do
 	session[:message_trash] = ""
 	redirect '/settings'
+end
+
+post '/clear_message_history' do
+	username = session[:username].to_s
+	friend = session[:sendfriend].to_s
+	table = "msg" + "_" + username + "_" + friend
+	db.exec("TRUNCATE #{table}")
+	redirect '/send'
 end
 
 post '/delete' do
@@ -341,7 +377,7 @@ post '/new_password' do
 		redirect '/forgot_password'
 	else
 		new_hashed_password = BCrypt::Password.create("#{new_data}")
-		db.exec("UPDATE accounts SET password = '{new_hashed_password}' WHERE username ='{username}'")
+		db.exec("UPDATE accounts SET password = '#{new_hashed_password}' WHERE username ='#{username}'")
 		redirect '/login'
 	end
 end
