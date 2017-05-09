@@ -204,6 +204,7 @@ post '/message_home' do
 end
 
 get '/message_home' do
+	
 	username = session[:username].to_s
 	friends_table = username + "_" + "friends"
 	friends=db.exec("SELECT friends, message FROM #{friends_table}");
@@ -228,12 +229,12 @@ post '/addfriend' do
  			db.exec("CREATE TABLE #{table_name_send} (
  			send	text,
  		 receive    text,
- 		 timestamp    timestamp default localtimestamp
+ 		 timestamp    text
  			)")
  			db.exec("CREATE TABLE #{table_name_receive} (
  			send	text,
  		 receive	text,
- 		 timestamp    timestamp default localtimestamp
+ 		 timestamp    text
  			)")
 		else friend_exist?(username, friend_name) == true
     		session[:message_add] = 'This user is already your friend.'
@@ -252,8 +253,9 @@ post '/send' do
 	from_table = "msg" + "_" + username + "_" + friend
 	to_table = "msg" + "_" + friend + "_" + username
 	friend_table = friend + "_" + "friends"
-	db.exec("INSERT INTO #{from_table}(send, receive) VALUES('#{msg}', ' ')");
-	db.exec("INSERT INTO #{to_table}(receive, send) VALUES('#{msg}', ' ')");
+	time = Time.now.strftime("%m/%d/%Y, %I:%M %p")
+	db.exec("INSERT INTO #{from_table}(send, receive, timestamp) VALUES('#{msg}', ' ', '#{time}')");
+	db.exec("INSERT INTO #{to_table}(receive, send, timestamp) VALUES('#{msg}', ' ', '#{time}')");
 	db.exec("UPDATE #{friend_table} SET message = 'unread' WHERE friends ='#{username}'")
 
 	redirect '/send'
