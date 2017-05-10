@@ -110,22 +110,21 @@ get '/fb_username_not_unique' do
 end
 
 get '/google' do
-	"hello world"
-	# message1 = ''
-	# message2 = ''
-	# session[:full_name]  = params[:first_name]
-	# session[:gmail] = params[:email]
-	# if g_user_exist?(params[:email]) == false
-	# 	erb :create_g_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
-	# else
-	# 	dbname=db.exec("SELECT username, gmail FROM accounts")
-	# 	dbname.each do |item|
-	# 		if item['gmail'] == params[:email]
-	# 			session[:username] = item['username']
-	# 		end
-	# 	end
-	# 	redirect '/message_home'
-	# end
+	message1 = ''
+	message2 = ''
+	session[:full_name]  = params[:first_name]
+	session[:gmail] = params[:email]
+	if g_user_exist?(params[:email]) == false
+		erb :create_g_username, locals: {full_name: session[:full_name], message1: message1, message2: message2}
+	else
+		dbname=db.exec("SELECT username, gmail FROM accounts")
+		dbname.each do |item|
+			if item['gmail'] == params[:email]
+				session[:username] = item['username']
+			end
+		end
+		redirect '/message_home'
+	end
 end
 
 post '/create_g_username' do
