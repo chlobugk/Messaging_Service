@@ -25,11 +25,9 @@ Have an account?
 
 <br> -->
 <!-- Custom Google Button -->
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-
-<script type="text/javascript" src="https://apis.google.com/js/platform.js"></script>
-
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<div class="social-login">
+          <button type="button" name="button" id="customBtn" class="google-login">Log in with Google</button>
+        </div>
 
 	<a href="/" onclick="signOut();">Sign Out</a>
  <script>	
@@ -40,6 +38,7 @@ Have an account?
     });
   }
   </script>
+  <script src="/js/google.js"></script>
 <!-- End of Custom Google Button -->
 
  
