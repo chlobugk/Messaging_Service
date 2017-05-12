@@ -1,6 +1,4 @@
 # Messaging_Service
-create a messaging app 
-login through facebook or google
 
-create messaging app
+a messaging app for Mined Minds. You can login through google, facebook, or a standard account. You can then have friends and start conversations. This can be ran locally by running the app.rb
 
